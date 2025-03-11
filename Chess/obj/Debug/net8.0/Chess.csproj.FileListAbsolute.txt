@@ -1,0 +1,15 @@
+/Users/keagan/C# projects (rider)/Chess/Chess/bin/Debug/net8.0/Chess
+/Users/keagan/C# projects (rider)/Chess/Chess/bin/Debug/net8.0/Chess.deps.json
+/Users/keagan/C# projects (rider)/Chess/Chess/bin/Debug/net8.0/Chess.runtimeconfig.json
+/Users/keagan/C# projects (rider)/Chess/Chess/bin/Debug/net8.0/Chess.dll
+/Users/keagan/C# projects (rider)/Chess/Chess/bin/Debug/net8.0/Chess.pdb
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.GeneratedMSBuildEditorConfig.editorconfig
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.AssemblyInfoInputs.cache
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.AssemblyInfo.cs
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.csproj.CoreCompileInputs.cache
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.dll
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/refint/Chess.dll
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.pdb
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.genruntimeconfig.cache
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/ref/Chess.dll
+/Users/keagan/C# projects (rider)/Chess/Chess/obj/Debug/net8.0/Chess.sourcelink.json
