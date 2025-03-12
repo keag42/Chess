@@ -11,14 +11,15 @@ namespace Chess {
             Console.WriteLine("----------------------------\n" + "----------------------------\n" + "\n \n \n" );
             
             
-            Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");//round title
-            ChessBoard.PrintBoard();
+            //Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");//round title
+            //ChessBoard.PrintBoard();
             
+            /*
             Console.WriteLine("select a piece:" + "\n select the letter");
             String letter = Console.ReadLine();
             Console.WriteLine("select the number");
-            int numY = Convert.ToInt32(Console.ReadLine());
-            int letterToNum = 0;
+            byte numY = Convert.ToByte(Console.Read());
+            byte letterToNum = 0;
             
             switch (letter) {
                 case "A":
@@ -54,7 +55,14 @@ namespace Chess {
                     letterToNum = 8;
                     break;
             } //wildly inefficient??
+            
             Console.WriteLine(ChessBoard.board2D[letterToNum][numY]);
+            */
+
+            Console.WriteLine("pawn testing");
+            Pawn.PawnMove(3, 2, true);
+            ChessBoard.PrintBoard();
+            return;
         }
     }
 }
