@@ -23,6 +23,19 @@ namespace Chess {
             board2D[yAxis][xAxis] = type + " ";
             roundCount++; //update round counter
         }
+        public static String getPosition(int xAxis, int yAxis) {
+            return board2D[yAxis][xAxis];
+        }
+
+        public static (int, int) letterToXY(string move) {
+            int x = move[0] - 'a' + 1;
+            int y = int.Parse(move[1].ToString());
+            return (x, y);
+        } 
+        
+        public static void replaceTile(int xAxis, int yAxis) {
+            board2D[yAxis][xAxis] = yAxis % 2 == 0 ? (xAxis % 2 ==0 ? "x " : "o ") : (xAxis % 2 == 0 ? "o " : "x ");
+        }
         public static void PrintBoard() {
             int rowIndex = 0;
             Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");  //round title
@@ -35,7 +48,6 @@ namespace Chess {
                 rowIndex++;
             }
         }
-
         public static void setStartingPositions() {
             Pieces.setPawnStartingPosition(); //create pawns
             Pieces.setRookStartingPosition(); //create rooks
