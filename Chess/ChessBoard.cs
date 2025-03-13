@@ -32,7 +32,6 @@ namespace Chess {
             int y = int.Parse(move[1].ToString());
             return (x, y);
         } 
-        
         public static void replaceTile(int xAxis, int yAxis) {
             board2D[yAxis][xAxis] = yAxis % 2 == 0 ? (xAxis % 2 ==0 ? "x " : "o ") : (xAxis % 2 == 0 ? "o " : "x ");
         }

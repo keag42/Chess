@@ -63,7 +63,6 @@ namespace Chess {
         public override string ToString() { //possibly remove this
             return "P";
         }
-
         //method for getting location
         public (int, int) getPosition() {
             return position;

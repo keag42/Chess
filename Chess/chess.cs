@@ -14,7 +14,6 @@ namespace Chess {
             //Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");//round title
             //ChessBoard.PrintBoard();
             
-            
             Console.WriteLine("select a piece:  ex 'a5', 'h7'");
             String letter = Console.ReadLine();
             var (x, y) = ChessBoard.letterToXY(letter);
