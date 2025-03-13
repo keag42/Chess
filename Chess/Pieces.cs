@@ -16,10 +16,10 @@ namespace Chess {
       
         public static void setPawnStartingPosition() {
             for (int i = 1; i <= 8; i++) {
-                Pawn tempW = new Pawn(i, 2);
+                Pawn tempW = new Pawn(i, 2, true);
                 whitePawns.Add(tempW);
                 
-                Pawn tempB = new Pawn(i, 7);
+                Pawn tempB = new Pawn(i, 7, false);
                 blackPawns.Add(tempB);
             }
         }

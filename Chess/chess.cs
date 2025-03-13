@@ -17,10 +17,10 @@ namespace Chess {
             Console.WriteLine("select a piece:  ex 'a5', 'h7'");
             String letter = Console.ReadLine();
             var (x, y) = ChessBoard.letterToXY(letter);
-            Console.WriteLine(ChessBoard.getPosition(x, y));
-            if (ChessBoard.getPosition(x, y) == "P ") {
+            Console.WriteLine("position: '" + ChessBoard.getPosition(x, y) + "'" );
+            if (ChessBoard.getPosition(x, y).ToString() == "P ") {
                 Console.WriteLine("you selected pawn: " + letter);
-                Pawn.PawnMove(x, y, true);
+                Pawn.PawnMove(x, y, true);//true for test
             }
             
 

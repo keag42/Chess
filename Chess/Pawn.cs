@@ -4,9 +4,11 @@ namespace Chess {
 
     public class Pawn : Pieces{
         private (int x, int y) position = (0, 0);
-        
-        public Pawn(int xAxis, int yAxis) { //starting position constructor
-            setPosition(xAxis, yAxis, "P");
+        private const String type = "P ";
+        private bool sideWhite;
+        public Pawn(int xAxis, int yAxis, bool sideWhite) { //starting position constructor
+            setPosition(xAxis, yAxis, type);
+            this.sideWhite = sideWhite;
             position = (xAxis, yAxis);
         }
         public static void PawnMove(int xAxis, int yAxis, bool isWhite) { //Still in progress
@@ -14,15 +16,21 @@ namespace Chess {
             byte pawnStartingPosition = isWhite ? (byte)2 : (byte)7;
             //first move? 
             bool isFirstMove = (pawnStartingPosition == yAxis);
+            
             //left move validation
              String leftAttack = ChessBoard.getPosition(xAxis + 1, yAxis - 1);
              bool leftValid = !(leftAttack == "x " || leftAttack == "o ") && (xAxis != 1);
+             
             //right move validation
              String rightAttack = ChessBoard.getPosition(xAxis - 1, yAxis - 1);
              bool rightValid = !(rightAttack == "x " || rightAttack == "o ") && (xAxis != 8);
+             
             //forward 1 move validation
-             String forwardMove = ChessBoard.getPosition(xAxis, yAxis - 1);
+             int frontMoveDirectionOne = isWhite ? 1 : -1; //not workin properly
+             //need to make list into object to pass color
+             String forwardMove = ChessBoard.getPosition(xAxis, yAxis + frontMoveDirectionOne);
              bool frontValid = (forwardMove == "x " || forwardMove == "o ");
+             
             //forward 2 move validation
             String forwardJump = ChessBoard.getPosition(xAxis, yAxis - 2);
             bool frontJumpValid = ((forwardJump == "x " || forwardJump == "o ") && isFirstMove);
@@ -40,7 +48,7 @@ namespace Chess {
              else if (xTemp == xAxis - 1 && yTemp == yAxis - 1 && rightValid) { //left attack
                  setPosition(xTemp, yTemp, "P");
              }
-             else if (xTemp == xAxis && yTemp == yAxis - 1 && frontValid) { //move 1 space forward
+             else if (xTemp == xAxis && yTemp == yAxis + frontMoveDirectionOne && frontValid) { //move 1 space forward
                  setPosition(xTemp, yTemp, "P");
              }
              
@@ -54,6 +62,12 @@ namespace Chess {
         //method for getting location
         public (int, int) getPosition() {
             return position;
+        }
+        public string getType() {
+            return type;
+        }
+        public bool getColor() {
+            return sideWhite;
         }
     }
 }
