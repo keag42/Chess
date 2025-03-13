@@ -4,21 +4,10 @@ namespace Chess {
 
     public class Pawn : Pieces{
         private (int x, int y) position = (0, 0);
-
-        //starting position constructor
-        public Pawn(int xAxis, int yAxis) {
+        
+        public Pawn(int xAxis, int yAxis) { //starting position constructor
             setPosition(xAxis, yAxis, "P");
             position = (xAxis, yAxis);
-        }
-
-
-        public static void Valid_Tiles(int xAxis, int yAxis, bool isWhite) {
-            //left attack
-            
-           
-           // if (leftAttack == "x" || leftAttack == "o") {
-                
-           // }
         }
         public static void PawnMove(int xAxis, int yAxis, bool isWhite) { //Still in progress
             //starting position
@@ -54,7 +43,6 @@ namespace Chess {
              else if (xTemp == xAxis && yTemp == yAxis - 1 && frontValid) { //move 1 space forward
                  setPosition(xTemp, yTemp, "P");
              }
-             
              
              replaceTile(xAxis, yAxis);
              PrintBoard();
