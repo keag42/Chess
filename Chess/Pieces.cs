@@ -1,56 +1,71 @@
 namespace Chess {
 
     public class Pieces : ChessBoard{
-        //pawns
-        static List<Pawn> whitePawns = new List<Pawn>();
-        static List<Pawn> blackPawns = new List<Pawn>();
-        //rooks
-        static List<Rook> whiteRooks = new List<Rook>();
-        static List<Rook> blackRooks = new List<Rook>();
-        //Bishops
-        static List<Bishop> whiteBishops = new List<Bishop>();
-        static List<Bishop> blackBishops = new List<Bishop>();
-        //Horse
-        static List<Horse> whiteHorses = new List<Horse>();
-        static List<Horse> blackHorses = new List<Horse>();
-      
-        public static void setPawnStartingPosition() {
-            for (int i = 1; i <= 8; i++) {
-                Pawn tempW = new Pawn(i, 2, true);
-                whitePawns.Add(tempW);
-                
-                Pawn tempB = new Pawn(i, 7, false);
-                blackPawns.Add(tempB);
-            }
-        }
-
-        public static void setRookStartingPosition() { 
-            whiteRooks.Add( new Rook(1, 1) );
-            whiteRooks.Add( new Rook(8, 1) );
-            blackRooks.Add( new Rook(1, 8) );
-            blackRooks.Add( new Rook(8, 8) );
-        }
-        public static void setHorseStartingPosition() { 
-            whiteHorses.Add( new Horse(2, 1) );
-            whiteHorses.Add( new Horse(7, 1) );
-            blackHorses.Add( new Horse(2, 8) );
-            blackHorses.Add( new Horse(7, 8) );
-        }
-        public static void setBishipStartingPosition() {
-            whiteBishops.Add( new Bishop(3, 1) );
-            whiteBishops.Add( new Bishop(6, 1) );
-            blackBishops.Add( new Bishop(3, 8) );
-            blackBishops.Add( new Bishop(6, 8) );
+        private (int x, int y) position = (0, 0);
+        private String type;
+        private bool sideWhite;
+        public Pieces(int xAxis, int yAxis, bool sideWhite, String type) { //starting position constructor
+            setPosition(xAxis, yAxis, type);
+            this.sideWhite = sideWhite;
+            position = (xAxis, yAxis);
+            this.type = type;
         }
         
-        public static void setQueenStartingPosition() {
-             Queen whiteQueen = new Queen(4, 1); 
-             Queen BlackQueen = new Queen(5,8 );
+        public (int, int) getPosition() {
+            return position;
         }
-        
-        public static void setKingStartingPosition() {
-             King whiteKing = new King(5, 1);
-             King BlackKing = new King(4,8); 
+        public string getType() {
+            return type;
         }
+        public bool getColor() {
+            return sideWhite;
+        }
+        public override string ToString() { //possibly remove this
+            return type + " ";
+        }
+        public static void PawnMove(int xAxis, int yAxis, bool isWhite) { 
+            //starting position
+            byte pawnStartingPosition = isWhite ? (byte)2 : (byte)7;
+            //first move? 
+            bool isFirstMove = (pawnStartingPosition == yAxis);
+            
+            //left move validation
+             String leftAttack = ChessBoard.getPosition(xAxis + 1, yAxis - 1);
+             bool leftValid = !(leftAttack == "x " || leftAttack == "o ") && (xAxis != 1);
+             
+            //right move validation
+             String rightAttack = ChessBoard.getPosition(xAxis - 1, yAxis - 1);
+             bool rightValid = !(rightAttack == "x " || rightAttack == "o ") && (xAxis != 8);
+             
+            //forward 1 move validation
+             int frontMoveDirectionOne = isWhite ? 1 : -1; //not workin properly
+             //need to make list into object to pass color
+             String forwardMove = ChessBoard.getPosition(xAxis, yAxis + frontMoveDirectionOne);
+             bool frontValid = (forwardMove == "x " || forwardMove == "o ");
+             
+            //forward 2 move validation
+            String forwardJump = ChessBoard.getPosition(xAxis, yAxis - 2);
+            bool frontJumpValid = ((forwardJump == "x " || forwardJump == "o ") && isFirstMove);
+             
+            
+             Console.WriteLine("where would you like to move this pawn? ex. e5, d3, a1");
+             string tempMove = Console.ReadLine();
+             var (xTemp, yTemp) = letterToXY(tempMove);
+             
+             //for now this wont include first move
+             
+             if (xTemp == xAxis + 1 && yTemp == yAxis - 1 && leftValid) { //Left attack
+                 setPosition(xTemp, yTemp, "P");
+             }
+             else if (xTemp == xAxis - 1 && yTemp == yAxis - 1 && rightValid) { //left attack
+                 setPosition(xTemp, yTemp, "P");
+             }
+             else if (xTemp == xAxis && yTemp == yAxis + frontMoveDirectionOne && frontValid) { //move 1 space forward
+                 setPosition(xTemp, yTemp, "P ");
+             }
+             
+             replaceTile(xAxis, yAxis);
+             PrintBoard();
+        }//still in progress?
     }
 }

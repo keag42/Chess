@@ -6,7 +6,7 @@ namespace Chess {
     internal class chessDrver {
         public static void Main(string[] args) {
             ChessBoard board = new ChessBoard();
-            ChessBoard.setStartingPositions();
+            ChessBoard.SetStartingPositions();
             ChessBoard.PrintBoard();
             Console.WriteLine("----------------------------\n" + "----------------------------\n" + "\n \n \n" );
             
@@ -17,15 +17,12 @@ namespace Chess {
             Console.WriteLine("select a piece:  ex 'a5', 'h7'");
             String letter = Console.ReadLine();
             var (x, y) = ChessBoard.letterToXY(letter);
-            Console.WriteLine("position: '" + ChessBoard.getPosition(x, y) + "'" );
             if (ChessBoard.getPosition(x, y).ToString() == "P ") {
                 Console.WriteLine("you selected pawn: " + letter);
-                Pawn.PawnMove(x, y, true);//true for test
+                Pieces.PawnMove(x, y, true);//true for test
             }
             
-
-            //TESTING =====================================
-            //Console.WriteLine("pawn testing");
+            
            
             
             //place all code above this

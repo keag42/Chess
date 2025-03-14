@@ -43,13 +43,46 @@ namespace Chess {
                 rowIndex++;
             }
         }
-        public static void setStartingPositions() {
-            Pieces.setPawnStartingPosition(); //create pawns
-            Pieces.setRookStartingPosition(); //create rooks
-            Pieces.setBishipStartingPosition(); //create bishops
-            Pieces.setHorseStartingPosition(); //create horses
-            Pieces.setQueenStartingPosition(); //creates queens
-            Pieces.setKingStartingPosition(); //creates kings
+        
+        //pawns
+        static List<Pieces> whitePawns = new List<Pieces>();
+        static List<Pieces> blackPawns = new List<Pieces>();
+        //rooks
+        static List<Pieces> whiteRooks = new List<Pieces>();
+        static List<Pieces> blackRooks = new List<Pieces>();
+        //Bishops
+        static List<Pieces> whiteBishops = new List<Pieces>();
+        static List<Pieces> blackBishops = new List<Pieces>();
+        //Horse
+        static List<Pieces> whiteHorses = new List<Pieces>();
+        static List<Pieces> blackHorses = new List<Pieces>();
+        //set queens
+        static Pieces whiteQueen = new Pieces(4, 1, true, "Q ");
+        static Pieces blackQueen = new Pieces(5,8, false, "Q ");
+        //set kings
+        static Pieces whiteKing= new Pieces(5, 1, true, "K ");
+        static Pieces blackKing = new Pieces(4,8, false, "K ");
+        public static void SetStartingPositions() {
+            //set pawns
+            for (int i = 1; i <= 8; i++) {
+                whitePawns.Add( new Pieces(i, 2, true, "P ") ); //add white pawns
+                blackPawns.Add(new Pieces(i, 7, false, "P ")); //add black pawns
+            }
+            //set rooks
+            whiteRooks.Add( new Pieces(1, 1, true, "R ") );
+            whiteRooks.Add( new Pieces(8, 1, true, "R ") );
+            blackRooks.Add( new Pieces(1, 8, false, "R ") );
+            blackRooks.Add( new Pieces(8, 8, false, "R ") );
+            //set horses
+            whiteHorses.Add( new Pieces(2, 1, true, "H ") );
+            whiteHorses.Add( new Pieces(7, 1, true, "H ") );
+            blackHorses.Add( new Pieces(2, 8, false, "H ") );
+            blackHorses.Add( new Pieces(7, 8, false, "H ") );
+            //set bishops
+            whiteBishops.Add( new Pieces(3, 1, true, "B ") );
+            whiteBishops.Add( new Pieces(6, 1,true, "B ") );
+            blackBishops.Add( new Pieces(3, 8,false, "B ") );
+            blackBishops.Add( new Pieces(6, 8, false, "B ") );
         }
     }
 }
