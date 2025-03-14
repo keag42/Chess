@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 // See https://aka.ms/new-console-template for more informatin
 namespace Chess {
-    internal class chessDrveI {
+    internal class ChessDriver {
         public static void Main(string[] args) {
             ChessBoard board = new ChessBoard();
             ChessBoard.SetStartingPositions();
@@ -30,6 +30,7 @@ namespace Chess {
                 }
                 else if (ChessBoard.getPosition(x, y).ToString() == "H ") {
                     Console.WriteLine("you selected horse: " + letter);
+                    ChessBoard.getPiecePositionValues(x, y)?.HorseMove();
                 }
                 else if (ChessBoard.getPosition(x, y).ToString() == "Q ") {
                     Console.WriteLine("you selected queen: " + letter);
@@ -41,7 +42,7 @@ namespace Chess {
                     Console.WriteLine("that is an empty spot.");
                 }
 
-                Console.WriteLine("continue? e");
+                Console.WriteLine("exit? e");
                 if (Console.ReadLine() == "e")
                     break;
             }

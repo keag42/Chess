@@ -23,6 +23,17 @@ namespace Chess {
         public static String getPosition(int xAxis, int yAxis) {
             return board2D[yAxis][xAxis]?.ToString();//allows nullable
         }
+        public static Pieces? getPiecePositionValues(int xAxis, int yAxis) {
+            if (board2D[yAxis][xAxis] is Pieces piece) { //if its a Valid Piece it returns it
+                return piece;
+            }
+            return null;
+        }
+        public static bool isInBounds(int x, int y) {
+            bool validX = x >= 1 && x <= 8;
+            bool validY = y >= 1 && y <= 8;
+            return validX && validY;
+        }
         public static (int, int) letterToXY(string move) {
             int x = move[0] - 'a' + 1;
             int y = int.Parse(move[1].ToString());
