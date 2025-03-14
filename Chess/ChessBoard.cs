@@ -16,6 +16,7 @@ namespace Chess {
             new List<object> { "7 |", "x ", "o ", "x ", "o ", "x ", "o ", "x ", "o " }, //white side
             new List<object> { "8 |", "o ", "x ", "o ", "x ", "o ", "x ", "o ", "x " }
         };
+        
         public static void setPosition(int xAxis, int yAxis, object piece) {
             board2D[yAxis][xAxis] = piece;
             roundCount++; //update round counter
@@ -23,7 +24,7 @@ namespace Chess {
         public static String getPosition(int xAxis, int yAxis) {
             return board2D[yAxis][xAxis]?.ToString();//allows nullable
         }
-        public static Pieces? getPiecePositionValues(int xAxis, int yAxis) {
+        public static Pieces getPiecePositionValues(int xAxis, int yAxis) {
             if (board2D[yAxis][xAxis] is Pieces piece) { //if its a Valid Piece it returns it
                 return piece;
             }
@@ -77,7 +78,7 @@ namespace Chess {
             //set pawns
             for (int i = 1; i <= 8; i++) {
                 whitePawns.Add( new Pieces(i, 2, true, "P ", "Pawn") ); //add white pawns
-                blackPawns.Add(new Pieces(i, 7, false, "P ", "Pawn") ); //add black pawns
+                blackPawns.Add( new Pieces(i, 7, false, "P ", "Pawn") ); //add black pawns
             }
             //set rooks
             whiteRooks.Add( new Pieces(1, 1, true, "R ", "Rook" ) );

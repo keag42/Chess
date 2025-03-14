@@ -81,7 +81,7 @@ namespace Chess {
             PrintBoard();
         }//still in progress?
         public void HorseMove() {
-            (int x, int y) = this.GetPiecePosition();
+            (int x, int y) = GetPiecePosition();
             int moveX;
             int moveY;
             bool isValid;
@@ -128,6 +128,20 @@ namespace Chess {
                 }
             }//end of while loop
             setPosition(moveX, moveY, this);
+        }
+
+        public void BishopMove() {
+            (int x, int y) = GetPiecePosition();
+            (int xMove, int yMove)finalMove;
+            
+            //temporary values to work with.
+            int xTemp;
+            int yTemp;
+            // -------
+            
+            
+
+
         }
         
         //public static void BishopMove() {}
