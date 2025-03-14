@@ -30,7 +30,7 @@ namespace Chess {
                 }
                 else if (ChessBoard.getPosition(x, y).ToString() == "H ") {
                     Console.WriteLine("you selected horse: " + letter);
-                    ChessBoard.getPiecePositionValues(x, y)?.HorseMove();
+                    //ChessBoard.getPiecePositionValues(x, y)?.HorseMove();
                 }
                 else if (ChessBoard.getPosition(x, y).ToString() == "Q ") {
                     Console.WriteLine("you selected queen: " + letter);
