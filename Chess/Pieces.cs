@@ -1,16 +1,19 @@
+using System.Runtime.CompilerServices;
+
 namespace Chess {
 
     public class Pieces : ChessBoard{
         private (int x, int y) position = (0, 0);
         private String type;
+        private string name;
         private bool sideWhite;
-        public Pieces(int xAxis, int yAxis, bool sideWhite, String type) { //starting position constructor
+        public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name) { //starting position constructor
             setPosition(xAxis, yAxis, type);
             this.sideWhite = sideWhite;
             position = (xAxis, yAxis);
             this.type = type;
+            this.name = name;
         }
-        
         public (int, int) getPosition() {
             return position;
         }
@@ -46,26 +49,33 @@ namespace Chess {
             //forward 2 move validation
             String forwardJump = ChessBoard.getPosition(xAxis, yAxis - 2);
             bool frontJumpValid = ((forwardJump == "x " || forwardJump == "o ") && isFirstMove);
-             
-            
-             Console.WriteLine("where would you like to move this pawn? ex. e5, d3, a1");
-             string tempMove = Console.ReadLine();
-             var (xTemp, yTemp) = letterToXY(tempMove);
-             
-             //for now this wont include first move
-             
-             if (xTemp == xAxis + 1 && yTemp == yAxis - 1 && leftValid) { //Left attack
-                 setPosition(xTemp, yTemp, "P");
-             }
-             else if (xTemp == xAxis - 1 && yTemp == yAxis - 1 && rightValid) { //left attack
-                 setPosition(xTemp, yTemp, "P");
-             }
-             else if (xTemp == xAxis && yTemp == yAxis + frontMoveDirectionOne && frontValid) { //move 1 space forward
-                 setPosition(xTemp, yTemp, "P ");
-             }
-             
-             replaceTile(xAxis, yAxis);
-             PrintBoard();
+
+            string tempMove;
+            while (true) {
+                Console.WriteLine("where would you like to move this pawn? ex. e5, d3, a1");
+                tempMove = Console.ReadLine();
+                var (xTemp, yTemp) = letterToXY(tempMove);
+                
+                //for now this wont include first move
+                if (xTemp == xAxis + 1 && yTemp == yAxis - 1 && leftValid) { //Left attack
+                    setPosition(xTemp, yTemp, "P");
+                    break;
+                    }
+                else if (xTemp == xAxis - 1 && yTemp == yAxis - 1 && rightValid) { //right attack
+                    setPosition(xTemp, yTemp, "P");
+                    break;
+                    }
+                else if (xTemp == xAxis && yTemp == yAxis + frontMoveDirectionOne && frontValid) {//move 1 space forward
+                    setPosition(xTemp, yTemp, "P ");
+                    break;
+                    }
+                else {
+                    Console.WriteLine("you cannot move there. try again.");
+                    }
+            }
+                
+            replaceTile(xAxis, yAxis);
+            PrintBoard();
         }//still in progress?
     }
 }
