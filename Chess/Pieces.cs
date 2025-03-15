@@ -26,6 +26,13 @@ namespace Chess {
         public bool GetColor() {
             return sideWhite;
         }
+
+        public (int, int) GetPieceMove() {
+            Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
+            string tempMove = Console.ReadLine();
+            var (xTemp, yTemp) = letterToXY(tempMove);
+            return (xTemp, yTemp);
+        }
         public override string ToString() { //possibly remove this
             return type + " ";
         }
@@ -86,7 +93,7 @@ namespace Chess {
             int moveY;
             bool isValid;
             while (true) {
-                Console.WriteLine("where would you like to move this pawn? ex. e5, d3, a1");
+                Console.WriteLine("where would you like to move this horse? ex. e5, d3, a1");
                 string tempMove = Console.ReadLine();
                 var (xTemp, yTemp) = letterToXY(tempMove);
                 
@@ -129,20 +136,49 @@ namespace Chess {
             }//end of while loop
             setPosition(moveX, moveY, this);
         }
-
         public void BishopMove() {
             (int x, int y) = GetPiecePosition();
-            (int xMove, int yMove)finalMove;
+            (int xMove, int yMove) finalMove = (0, 0);
+            int xDir, yDir;
             
-            //temporary values to work with.
-            int xTemp;
-            int yTemp;
-            // -------
-            
-            
-
-
-        }
+            while (true) {
+                var (xTemp, yTemp) = GetPieceMove();
+                if (xTemp == x && yTemp == y) {
+                    Console.WriteLine("you are already there try again.");
+                    continue;
+                }//if its the same tile your on try again
+                yDir = yTemp > y? +1 : -1;
+                xDir = xTemp > x? +1 : -1;
+                bool isTempValid = true;
+                for (int i = 1; i < 8; i++) {
+                    string tempTileCheck = getPosition(x + (i*xDir), y + (i*yDir));
+                    if (x + (i * xDir) == xTemp && y + (i * yDir) == yTemp) {
+                        break;
+                        }
+                    else if (tempTileCheck != "x " || tempTileCheck != "o ") {
+                        isTempValid = false;
+                        break;
+                        }
+                } //checks pathway to destination
+                if (!isTempValid) {
+                    Console.WriteLine("there is a piece in the way, choose a different move.");
+                    continue;
+                } // if theres a piece in the way ask again
+                else {
+                    if (getPosition(xTemp, yTemp) == "x " || getPosition(xTemp, yTemp) == "o ") {
+                        finalMove = (xTemp, yTemp);
+                    }
+                    else if (getPiecePositionValues(xTemp, yTemp).GetColor() != GetColor()) {
+                        finalMove = (xTemp, yTemp);
+                    } // if it is the opposite team
+                    else {
+                        Console.WriteLine("that is your own piece you cannot move there.");
+                        continue;
+                    }
+                }//end of validity check
+            }
+            setPosition(finalMove.xMove, finalMove.yMove, this);
+        } // final bishop structure for now
         
         //public static void BishopMove() {}
         //public static void QueenMove() {}
