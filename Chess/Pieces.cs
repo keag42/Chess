@@ -7,6 +7,7 @@ namespace Chess {
         private String type;
         private string name;
         private bool sideWhite;
+        private int moveCount = 0;
 
         public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name) {
             //starting position constructor
@@ -36,7 +37,6 @@ namespace Chess {
         public bool isEnemy(int x, int y) {
             return getPiecePositionValues(x, y).GetColor() != this.GetColor();
         }
-
          public (int, int) GetPieceMove() {
             Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
             string tempMove = Console.ReadLine();
@@ -46,53 +46,32 @@ namespace Chess {
         public override string ToString() { //possibly remove this
             return type + " ";
         }
-        public static void PawnMove(int xAxis, int yAxis, bool isWhite) { 
-            //starting position
-            byte pawnStartingPosition = isWhite ? (byte)2 : (byte)7;
-            //first move? 
-            bool isFirstMove = (pawnStartingPosition == yAxis);
-            
-            //left move validation
-             String leftAttack = getPosition(xAxis + 1, yAxis - 1);
-             bool leftValid = !(leftAttack == "x " || leftAttack == "o ") && (xAxis != 1);
-             
-            //right move validation
-             String rightAttack = getPosition(xAxis - 1, yAxis - 1);
-             bool rightValid = !(rightAttack == "x " || rightAttack == "o ") && (xAxis != 8);
-             
-            //forward 1 move validation
-             int frontMoveDirectionOne = isWhite ? 1 : -1; //not workin properly
-             //need to make list into object to pass color
-             String forwardMove = getPosition(xAxis, yAxis + frontMoveDirectionOne);
-             bool frontValid = (forwardMove == "x " || forwardMove == "o ");
-             
-            //forward 2 move validation
-            String forwardJump = getPosition(xAxis, yAxis - 2);
-            bool frontJumpValid = ((forwardJump == "x " || forwardJump == "o ") && isFirstMove);
-
-            string tempMove;
+        public void PawnMove(int xAxis, int yAxis) { 
+            int yDir = sideWhite ? -1 : +1;
             while (true) {
-                Console.WriteLine("where would you like to move this pawn? ex. e5, d3, a1");
-                tempMove = Console.ReadLine();
-                var (xTemp, yTemp) = letterToXY(tempMove);
-                
-                //for now this wont include first move
-                if (xTemp == xAxis + 1 && yTemp == yAxis - 1 && leftValid) { //Left attack
+                var (xTemp, yTemp) = GetPieceMove();
+                if (xTemp == xAxis + 1 && yTemp == yAxis + yDir) { //Left attack
                     setPosition(xTemp, yTemp, "P");
+                    moveCount++;
                     }
-                else if (xTemp == xAxis - 1 && yTemp == yAxis - 1 && rightValid) { //right attack
+                else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir) { //right attack
                     setPosition(xTemp, yTemp, "P");
+                    moveCount++;
                     }
-                else if (xTemp == xAxis && yTemp == yAxis + frontMoveDirectionOne && frontValid) {//move 1 space forward
+                else if (xTemp == xAxis && yTemp == yDir) {//move 1 space forward
                     setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    moveCount++;
                     }
+                else if (xTemp == xAxis && yTemp == (2*yDir) && moveCount == 0) {//move 2 space forward
+                    setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    moveCount++;
+                }
                 else {
                     Console.WriteLine("you cannot move there. try again.");
                     continue;
                 }
                 break;
             }
-            
                 
             replaceTile(xAxis, yAxis);
             PrintBoard();
@@ -101,10 +80,7 @@ namespace Chess {
             (int x, int y) = GetPiecePosition();
             int moveX, moveY;
             while (true) {
-                Console.WriteLine("where would you like to move this horse? ex. e5, d3, a1");
-                string tempMove = Console.ReadLine();
-                var (xTemp, yTemp) = letterToXY(tempMove);
-                
+                var (xTemp, yTemp) = GetPieceMove();
                 //Checks validity of move
                 if ( !((xTemp == x - 1 && yTemp == y + 2) || 
                        (xTemp == x + 1 && yTemp == y + 2) ||
@@ -129,7 +105,7 @@ namespace Chess {
                 else {
                     if (isEnemy(xTemp, yTemp)) {
                         string tempName = getPiecePositionValues(xTemp, yTemp).GetName();
-                        Console.WriteLine($"{tempMove} takes {tempName}");
+                        Console.WriteLine($" takes {tempName}");
                         moveX = xTemp;
                         moveY = yTemp;
                         break;
