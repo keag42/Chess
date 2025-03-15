@@ -2,20 +2,22 @@ using System.Runtime.CompilerServices;
 
 namespace Chess {
 
-    public class Pieces : ChessBoard {
+    public class Pieces {
+        private ChessBoard board;
         private (int x, int y) position = (0, 0);
         private String type;
         private string name;
         private bool sideWhite;
         private int moveCount = 0;
 
-        public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name) {
+        public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name, ChessBoard board) {
             //starting position constructor
-            setPosition(xAxis, yAxis, type);
+            this.board = board;
             this.sideWhite = sideWhite;
             position = (xAxis, yAxis);
             this.type = type;
             this.name = name;
+            board.setPosition(xAxis, yAxis, this);
         }
 
         public (int, int) GetPiecePosition() {
@@ -31,16 +33,16 @@ namespace Chess {
             return sideWhite;
         }
         public bool isEmpty(int x, int y) {
-            return getPosition(x, y) == "x " || getPosition(x, y) == "o ";
+            return board.getPosition(x, y) == "x " || board.getPosition(x, y) == "o ";
         }
 
         public bool isEnemy(int x, int y) {
-            return getPiecePositionValues(x, y).GetColor() != this.GetColor();
+            return board.getPiecePositionValues(x, y).GetColor() != this.GetColor();
         }
          public (int, int) GetPieceMove() {
             Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
             string tempMove = Console.ReadLine();
-            var (xTemp, yTemp) = letterToXY(tempMove);
+            var (xTemp, yTemp) = board.letterToXY(tempMove);
             return (xTemp, yTemp);
         }
         public override string ToString() { //possibly remove this
@@ -48,23 +50,23 @@ namespace Chess {
         }
         public void PawnMove() { 
             (int xAxis, int yAxis) = GetPiecePosition();
-            int yDir = sideWhite ? -1 : +1;
+            int yDir = sideWhite ? +1 : -1;
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
                 if (xTemp == xAxis + 1 && yTemp == yAxis + yDir) { //Left attack
-                    setPosition(xTemp, yTemp, "P");
+                    board.setPosition(xTemp, yTemp, "P");
                     moveCount++;
                     }
                 else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir) { //right attack
-                    setPosition(xTemp, yTemp, "P");
+                    board.setPosition(xTemp, yTemp, "P");
                     moveCount++;
                     }
                 else if (xTemp == xAxis && yTemp == yDir + yAxis) {//move 1 space forward
-                    setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                     }
                 else if (xTemp == xAxis && yTemp == (2*yDir) && moveCount == 0) {//move 2 space forward
-                    setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                 }
                 else {
@@ -74,8 +76,8 @@ namespace Chess {
                 break;
             }
                 
-            replaceTile(xAxis, yAxis);
-            PrintBoard();
+            board.replaceTile(xAxis, yAxis);
+            board.PrintBoard();
         }
         public void HorseMove() {
             (int x, int y) = GetPiecePosition();
@@ -105,7 +107,7 @@ namespace Chess {
                     }
                 else {
                     if (isEnemy(xTemp, yTemp)) {
-                        string tempName = getPiecePositionValues(xTemp, yTemp).GetName();
+                        string tempName = board.getPiecePositionValues(xTemp, yTemp).GetName();
                         Console.WriteLine($" takes {tempName}");
                         moveX = xTemp;
                         moveY = yTemp;
@@ -117,7 +119,8 @@ namespace Chess {
                     }
                 }
             }//end of while loop
-            setPosition(moveX, moveY, this);
+            board.setPosition(moveX, moveY, this);
+            board.replaceTile(x, y);
         }
         public void BishopMove() {
             (int x, int y) = GetPiecePosition();
@@ -160,10 +163,11 @@ namespace Chess {
                     }
                 }//end of validity check
             } // move validation
-            setPosition(finalMove.xMove, finalMove.yMove, this);
+            board.setPosition(finalMove.xMove, finalMove.yMove, this);
         } // final bishop structure for now
         
         //public static void QueenMove() {}
+        //ROOK MOVE
         public void KingMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
@@ -187,8 +191,7 @@ namespace Chess {
                     }
                 }
             }
-            setPosition(finalMove.xMove, finalMove.yMove, this);
+            board.setPosition(finalMove.xMove, finalMove.yMove, this);
         }
-        
     }
 }

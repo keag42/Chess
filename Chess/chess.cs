@@ -6,62 +6,60 @@ namespace Chess {
     internal class ChessDriver {
         public static void Main(string[] args) {
             ChessBoard board = new ChessBoard();
-            ChessBoard.SetStartingPositions();
-            ChessBoard.PrintBoard();
+            board.PrintBoard();
             Console.WriteLine("----------------------------\n" + "----------------------------\n" + "\n \n \n" );
+
             
-            
-            //Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");//round title
-            //ChessBoard.PrintBoard();
-            MovePiece();
-            //place all code above this
-            return;
+            MovePiece(board);
         }
 
-        public static void MovePiece() {
-            while (true) {
-                Console.WriteLine("select a piece:  ex 'a5', 'h7'");
-                string letter = Console.ReadLine();
-                var (x, y) = ChessBoard.letterToXY(letter);
-                string pieceName = ChessBoard.getPosition(x, y);
 
-                // Null check for piece existence at the position
-                var piece = ChessBoard.getPiecePositionValues(x, y); // Getting the piece at the selected position
-                if (piece == null) {
-                    Console.WriteLine("No piece at this position.");
-                    continue; // If no piece, continue the loop and ask for a new move
+        public static void MovePiece(ChessBoard board) {
+            while (true) {
+                Console.WriteLine("Select a piece (e.g., 'a2', 'h7') or type 'exit' to quit:");
+                string input = Console.ReadLine().ToLower();
+
+                if (input == "exit") break;
+
+                // Convert input to coordinates (e.g., "a2" -> x=1, y=2)
+                var (x, y) = board.letterToXY(input);
+                Pieces selectedPiece = board.getPiecePositionValues(x, y);
+
+                if (selectedPiece == null) {
+                    Console.WriteLine("No piece at this position. Try again.");
+                    continue;
                 }
 
-                switch (pieceName) {
-                    case "P ":
-                        Console.WriteLine("you selected pawn: " + letter);
-                        piece.PawnMove(); // Call the piece method, assuming it's not null now
+                // Call the appropriate move method based on the piece type
+                switch (selectedPiece.GetType().Trim()) {
+                    // Trim to remove spaces
+                    case "P":
+                        selectedPiece.PawnMove();
                         break;
-                    case "R ":
-                        Console.WriteLine("you selected rook: " + letter);
+                    case "H":
+                        selectedPiece.HorseMove();
                         break;
-                    case "B ":
-                        Console.WriteLine("you selected bishop: " + letter);
+                    case "R":
+                        Console.WriteLine("rook selected, no function written yet");
+                        //selectedPiece.RookMove();
                         break;
-                    case "H ":
-                        Console.WriteLine("you selected horse: " + letter);
+                    case "B":
+                        selectedPiece.BishopMove();
                         break;
-                    case "Q ":
-                        Console.WriteLine("you selected queen: " + letter);
+                    case "Q":
+                        Console.WriteLine("rook selected, no function written yet");
+                        //selectedPiece.QueenMove();
                         break;
-                    case "K ":
-                        Console.WriteLine("you selected king: " + letter);
+                    case "K":
+                        selectedPiece.KingMove();
                         break;
                     default:
-                        Console.WriteLine("that is an empty spot.");
-                        continue;
+                        Console.WriteLine("Unknown piece type.");
+                        break;
                 }
 
-                Console.WriteLine("exit? e");
-                if (Console.ReadLine() == "e")
-                    break;
+                board.PrintBoard(); // Refresh the board after the move
             }
         }
-
     }
 }
