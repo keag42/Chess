@@ -46,7 +46,8 @@ namespace Chess {
         public override string ToString() { //possibly remove this
             return type + " ";
         }
-        public void PawnMove(int xAxis, int yAxis) { 
+        public void PawnMove() { 
+            (int xAxis, int yAxis) = GetPiecePosition();
             int yDir = sideWhite ? -1 : +1;
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
@@ -58,7 +59,7 @@ namespace Chess {
                     setPosition(xTemp, yTemp, "P");
                     moveCount++;
                     }
-                else if (xTemp == xAxis && yTemp == yDir) {//move 1 space forward
+                else if (xTemp == xAxis && yTemp == yDir + yAxis) {//move 1 space forward
                     setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                     }
@@ -75,7 +76,7 @@ namespace Chess {
                 
             replaceTile(xAxis, yAxis);
             PrintBoard();
-        }//still in progress?
+        }
         public void HorseMove() {
             (int x, int y) = GetPiecePosition();
             int moveX, moveY;

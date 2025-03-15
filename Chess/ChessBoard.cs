@@ -22,13 +22,25 @@ namespace Chess {
             roundCount++; //update round counter
         }
         public static String getPosition(int xAxis, int yAxis) {
-            return board2D[yAxis][xAxis]?.ToString();//allows nullable
+            return board2D[yAxis][xAxis]?.ToString() ?? "Empty"; // Return "Empty" if the position is null
         }
+
         public static Pieces getPiecePositionValues(int xAxis, int yAxis) {
-            if (board2D[yAxis][xAxis] is Pieces piece) { //if its a Valid Piece it returns it
-                return piece;
+            if (board2D[yAxis][xAxis] is Pieces piece) {
+                return piece; // Return the piece if it's a valid object
             }
-            return null;
+            //Debugging
+            if (board2D[yAxis][xAxis] is Pieces temp) { // Now you can safely work with temp, which is of type Pieces
+                Console.WriteLine("Found a piece at this position: " + temp);
+                Console.WriteLine(temp.GetName());
+                }
+            else {
+                Console.WriteLine("No piece at this position."); 
+            }
+            
+            return null; // Return null if there's no valid piece at this position
+            
+            
         }
         public static bool isInBounds(int x, int y) {
             bool validX = x >= 1 && x <= 8;
@@ -96,5 +108,7 @@ namespace Chess {
             blackBishops.Add( new Pieces(3, 8,false, "B ", "Bishop") );
             blackBishops.Add( new Pieces(6, 8, false, "B ", "Bishop") );
         }
+        
+        
     }
 }

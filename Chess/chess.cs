@@ -13,42 +13,55 @@ namespace Chess {
             
             //Console.WriteLine("         Round: " + ChessBoard.roundCount + "\n");//round title
             //ChessBoard.PrintBoard();
-            
+            MovePiece();
+            //place all code above this
+            return;
+        }
+
+        public static void MovePiece() {
             while (true) {
                 Console.WriteLine("select a piece:  ex 'a5', 'h7'");
-                String letter = Console.ReadLine();
+                string letter = Console.ReadLine();
                 var (x, y) = ChessBoard.letterToXY(letter);
-                if (ChessBoard.getPosition(x, y).ToString() == "P ") {
-                    Console.WriteLine("you selected pawn: " + letter);
-                    Pieces.PawnMove(x, y, true); //true for test
+                string pieceName = ChessBoard.getPosition(x, y);
+
+                // Null check for piece existence at the position
+                var piece = ChessBoard.getPiecePositionValues(x, y); // Getting the piece at the selected position
+                if (piece == null) {
+                    Console.WriteLine("No piece at this position.");
+                    continue; // If no piece, continue the loop and ask for a new move
                 }
-                else if (ChessBoard.getPosition(x, y).ToString() == "R ") {
-                    Console.WriteLine("you selected rook: " + letter);
-                }
-                else if (ChessBoard.getPosition(x, y).ToString() == "B ") {
-                    Console.WriteLine("you selected bishop: " + letter);
-                }
-                else if (ChessBoard.getPosition(x, y).ToString() == "H ") {
-                    Console.WriteLine("you selected horse: " + letter);
-                    //ChessBoard.getPiecePositionValues(x, y)?.HorseMove();
-                }
-                else if (ChessBoard.getPosition(x, y).ToString() == "Q ") {
-                    Console.WriteLine("you selected queen: " + letter);
-                }
-                else if (ChessBoard.getPosition(x, y).ToString() == "K ") {
-                    Console.WriteLine("you selected king: " + letter);
-                }
-                else {
-                    Console.WriteLine("that is an empty spot.");
+
+                switch (pieceName) {
+                    case "P ":
+                        Console.WriteLine("you selected pawn: " + letter);
+                        piece.PawnMove(); // Call the piece method, assuming it's not null now
+                        break;
+                    case "R ":
+                        Console.WriteLine("you selected rook: " + letter);
+                        break;
+                    case "B ":
+                        Console.WriteLine("you selected bishop: " + letter);
+                        break;
+                    case "H ":
+                        Console.WriteLine("you selected horse: " + letter);
+                        break;
+                    case "Q ":
+                        Console.WriteLine("you selected queen: " + letter);
+                        break;
+                    case "K ":
+                        Console.WriteLine("you selected king: " + letter);
+                        break;
+                    default:
+                        Console.WriteLine("that is an empty spot.");
+                        continue;
                 }
 
                 Console.WriteLine("exit? e");
                 if (Console.ReadLine() == "e")
                     break;
             }
-
-            //place all code above this
-            return;
         }
+
     }
 }
