@@ -20,19 +20,15 @@ namespace Chess {
         public (int, int) GetPiecePosition() {
             return position;
         }
-
         public string GetType() {
             return type;
         }
-
         public string GetName() {
             return name;
         }
-
         public bool GetColor() {
             return sideWhite;
         }
-
         public bool isEmpty(int x, int y) {
             return getPosition(x, y) == "x " || getPosition(x, y) == "o ";
         }
@@ -103,9 +99,7 @@ namespace Chess {
         }//still in progress?
         public void HorseMove() {
             (int x, int y) = GetPiecePosition();
-            int moveX;
-            int moveY;
-            bool isValid;
+            int moveX, moveY;
             while (true) {
                 Console.WriteLine("where would you like to move this horse? ex. e5, d3, a1");
                 string tempMove = Console.ReadLine();
@@ -127,24 +121,22 @@ namespace Chess {
                         Console.WriteLine("that is not a valid Horse move. where would you like to move?");
                         continue;
                     }
-                if (getPosition(xTemp, yTemp) == "x " || getPosition(xTemp, yTemp) == "o ") {
+                if (isEmpty(xTemp, yTemp)) {
                     moveX = xTemp;
                     moveY = yTemp;
                     break;
                     }
                 else {
-                    bool tileMovingToo = getPiecePositionValues(xTemp, yTemp).GetColor();
-                    bool currentTile = this.GetColor();
-                    if (tileMovingToo == currentTile) {
-                        Console.WriteLine("that's your piece you cant move there. try again.");
-                        continue;
-                    }
-                    else {
+                    if (isEnemy(xTemp, yTemp)) {
                         string tempName = getPiecePositionValues(xTemp, yTemp).GetName();
                         Console.WriteLine($"{tempMove} takes {tempName}");
                         moveX = xTemp;
                         moveY = yTemp;
                         break;
+                    }
+                    else {
+                        Console.WriteLine("that's your piece you cant move there. try again.");
+                        continue;
                     }
                 }
             }//end of while loop
@@ -164,12 +156,12 @@ namespace Chess {
                 yDir = yTemp > y? +1 : -1;
                 xDir = xTemp > x? +1 : -1;
                 bool isTempValid = true;
-                for (int i = 1; i < 8; i++) {
-                    string tempTileCheck = getPosition(x + (i*xDir), y + (i*yDir));
-                    if (x + (i * xDir) == xTemp && y + (i * yDir) == yTemp) {
+                for (int i = 1; i <= 8; i++) {
+                    int xCheck = x + (i*xDir), yCheck = y + (i*yDir);
+                    if (xCheck == xTemp && yCheck == yTemp) {//if youve reached destination
                         break;
                         }
-                    else if (tempTileCheck != "x " || tempTileCheck != "o ") {
+                    else if (!isEmpty(xCheck, yCheck)) {
                         isTempValid = false;
                         break;
                         }
@@ -179,10 +171,10 @@ namespace Chess {
                     continue;
                 } // if theres a piece in the way ask again
                 else {
-                    if (getPosition(xTemp, yTemp) == "x " || getPosition(xTemp, yTemp) == "o ") {
+                    if (isEmpty(xTemp, yTemp)) {
                         finalMove = (xTemp, yTemp);
                     }
-                    else if (getPiecePositionValues(xTemp, yTemp).GetColor() != GetColor()) {
+                    else if (isEnemy(xTemp, yTemp)) {
                         finalMove = (xTemp, yTemp);
                     } // if it is the opposite team
                     else {
@@ -190,7 +182,7 @@ namespace Chess {
                         continue;
                     }
                 }//end of validity check
-            }
+            } // move validation
             setPosition(finalMove.xMove, finalMove.yMove, this);
         } // final bishop structure for now
         
@@ -206,9 +198,11 @@ namespace Chess {
                 if (isValidKingMove) { //valid king move
                     if (isEmpty(xTemp, yTemp)) { //no piece there
                         finalMove = (xTemp, yTemp);
+                        break;
                     }
                     else if (isEnemy(xTemp, yTemp)) {
                         finalMove = (xTemp, yTemp);
+                        break;
                     }
                     else {
                         Console.WriteLine("that is your own piece, you cant move there. try again!");
@@ -216,6 +210,7 @@ namespace Chess {
                     }
                 }
             }
+            setPosition(finalMove.xMove, finalMove.yMove, this);
         }
         
     }
