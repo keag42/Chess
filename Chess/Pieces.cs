@@ -2,32 +2,46 @@ using System.Runtime.CompilerServices;
 
 namespace Chess {
 
-    public class Pieces : ChessBoard{
+    public class Pieces : ChessBoard {
         private (int x, int y) position = (0, 0);
         private String type;
         private string name;
         private bool sideWhite;
-        public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name) { //starting position constructor
+
+        public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name) {
+            //starting position constructor
             setPosition(xAxis, yAxis, type);
             this.sideWhite = sideWhite;
             position = (xAxis, yAxis);
             this.type = type;
             this.name = name;
         }
+
         public (int, int) GetPiecePosition() {
             return position;
         }
+
         public string GetType() {
             return type;
         }
+
         public string GetName() {
             return name;
         }
+
         public bool GetColor() {
             return sideWhite;
         }
 
-        public (int, int) GetPieceMove() {
+        public bool isEmpty(int x, int y) {
+            return getPosition(x, y) == "x " || getPosition(x, y) == "o ";
+        }
+
+        public bool isEnemy(int x, int y) {
+            return getPiecePositionValues(x, y).GetColor() != this.GetColor();
+        }
+
+         public (int, int) GetPieceMove() {
             Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
             string tempMove = Console.ReadLine();
             var (xTemp, yTemp) = letterToXY(tempMove);
@@ -180,9 +194,29 @@ namespace Chess {
             setPosition(finalMove.xMove, finalMove.yMove, this);
         } // final bishop structure for now
         
-        //public static void BishopMove() {}
         //public static void QueenMove() {}
-        //public static void KingMove() {}
+        public void KingMove() {
+            (int x, int y) = GetPiecePosition();
+            (int xMove, int yMove) finalMove = (0, 0);
+
+            while (true) {
+                var (xTemp, yTemp) = GetPieceMove();
+                bool isValidKingMove = (xTemp >= x - 1 && xTemp <= x + 1 && yTemp >= y - 1 && yTemp <= y + 1);
+
+                if (isValidKingMove) { //valid king move
+                    if (isEmpty(xTemp, yTemp)) { //no piece there
+                        finalMove = (xTemp, yTemp);
+                    }
+                    else if (isEnemy(xTemp, yTemp)) {
+                        finalMove = (xTemp, yTemp);
+                    }
+                    else {
+                        Console.WriteLine("that is your own piece, you cant move there. try again!");
+                        continue;
+                    }
+                }
+            }
+        }
         
     }
 }
