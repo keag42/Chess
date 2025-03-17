@@ -35,9 +35,20 @@ namespace Chess {
         public bool isEmpty(int x, int y) {
             return board.getPosition(x, y) == "x " || board.getPosition(x, y) == "o ";
         }
-
         public bool isEnemy(int x, int y) {
             return board.getPiecePositionValues(x, y).GetColor() != this.GetColor();
+        }
+        public bool isValidMove(int x, int y) {
+            if (isEmpty(x, y)) {
+                return true;
+            }
+            else {
+                if (isEnemy(x, y))
+                    return true;
+                else
+                    Console.WriteLine("that is your piece.");
+                    return false;
+            }
         }
          public (int, int) GetPieceMove() {
             Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
@@ -65,11 +76,13 @@ namespace Chess {
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                     }
-                else if (xTemp == xAxis && yTemp == (2*yDir) && moveCount == 0) {//move 2 space forward
+                else if (xTemp == xAxis && yTemp == (2*yDir) + (2*yDir) && moveCount == 0) {//move 2 space forward
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                 }
                 else {
+                    Console.WriteLine("move Count: " + moveCount);
+                    Console.WriteLine(" y direction: " + 2*yDir);
                     Console.WriteLine("you cannot move there. try again.");
                     continue;
                 }
@@ -77,7 +90,6 @@ namespace Chess {
             }
                 
             board.replaceTile(xAxis, yAxis);
-            board.PrintBoard();
         }
         public void HorseMove() {
             (int x, int y) = GetPiecePosition();
@@ -168,6 +180,58 @@ namespace Chess {
         
         //public static void QueenMove() {}
         //ROOK MOVE
+        public void RookMove() {
+            (int x, int y) = GetPiecePosition();
+            (int xMove, int yMove) finalMove = (0, 0);
+
+            while (true) {
+                var (xTemp, yTemp) = GetPieceMove();
+                bool onXorY = (xTemp == x && yTemp != y) || (xTemp != x && yTemp == y);
+                
+                if (!isValidMove(xTemp, yTemp) || !onXorY) {
+                    Console.WriteLine("invalid move try again");
+                    continue;
+                }
+                
+                bool isHorizontal = (xTemp == x && yTemp != y);
+                bool piecesInWay = false;
+                
+                if ( !isHorizontal )  { //moving vertically
+                    int yDirection = yTemp > y? +1 : -1;
+                    int tempTileY = y + moveCount * yDirection;
+                        
+                    while (tempTileY != yTemp) { //while destination not reached
+                        if (!isEmpty(x, tempTileY)) {
+                            piecesInWay = true;
+                            break;
+                        }
+                        moveCount++;
+                    }
+                }
+                else if (isHorizontal) { // Horizontal movement
+                    int xDirection = xTemp > x? +1 : -1;
+                    int tempTileX = x + moveCount * xDirection;
+                        
+                    while (tempTileX != xTemp) { //while destination not reached
+                        if (!isEmpty(tempTileX, y)) {
+                            piecesInWay = true;
+                            break;
+                        }
+                        moveCount++;
+                    }
+                }
+
+                if (piecesInWay) {
+                    Console.WriteLine("there is a piece in the way.");
+                    continue;
+                }
+                else {
+                    finalMove = (xTemp, yTemp);
+                }
+            }// end of while statement
+            
+            board.setPosition(finalMove.xMove, finalMove.yMove, this);
+        } //version 1 rook movement
         public void KingMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);

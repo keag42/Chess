@@ -37,6 +37,7 @@ namespace Chess {
         public (int, int) letterToXY(string move) {
             int x = move[0] - 'a' + 1;
             int y = int.Parse(move[1].ToString());
+            
             return (x, y);
         }
 
