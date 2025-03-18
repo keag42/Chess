@@ -271,61 +271,49 @@ namespace Chess {
                 // h/v unfinished
                 if (isXY) { // horizontal or verticle
                     bool isVerticle = (x == xTemp && y != yTemp);
-                    int direction = isVerticle ? (yTemp < y? -1 : +1 ) : (xTemp < x? -1 : +1);
+                    int direction = isVerticle ?  (yTemp < y? -1 : +1 ) : (xTemp < x? -1 : +1) ;
                     int moveCount = 1;
                     bool piecesInWay = false;
-
-                    while (true) {
-                        int moveAmount = moveCount * direction;
-                        if (isVerticle) { //moving up/down
-                            if (!isEmpty(x, y + moveAmount)) {
+                    
+                    if ( isVerticle )  { //moving vertically
+                        int yDirection = yTemp > y? +1 : -1;
+                        int tempTileY = y + moveCount * yDirection;
+                    
+                        while (tempTileY != yTemp) { //while destination not reached
+                            if (!isEmpty(x, tempTileY)) {
                                 piecesInWay = true;
                                 break;
                             }
+                            moveCount++;
                         }
-                        else { //moving left/right
-                            if (!isEmpty(x + moveAmount, y)) {
-                                piecesInWay = true;
-                                break;
-                            }
-                            
-                        }
-                        moveCount++;
                     }
+                    else if ( !isVerticle ) { // Horizontal movement
+                        int xDirection = xTemp > x? +1 : -1;
+                        int tempTileX = x + moveCount * xDirection;
+                    
+                        while (tempTileX != xTemp) { //while destination not reached
+                            if (!isEmpty(tempTileX, y)) {
+                                piecesInWay = true;
+                                break;
+                            }
+                            moveCount++;
+                        }
+                    }
+
+                    if (piecesInWay) {
+                        Console.WriteLine("there is a piece in the way.");
+                        continue;
+                    }
+                    else {
+                        finalMove = (xTemp, yTemp);
+                        break;
+                    }
+                    
                 } // horizontal or verticle
                 
                 //add Diagonal
-            }
+            }//end of while loop
+            board.setPosition(finalMove.xMove, finalMove.yMove, this);
         }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
     }
 }
