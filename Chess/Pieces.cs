@@ -66,19 +66,19 @@ namespace Chess {
             int yDir = sideWhite ? +1 : -1;
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
-                if (xTemp == xAxis + 1 && yTemp == yAxis + yDir) { //Left attack
+                if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && isEnemy(xTemp, yTemp)) { //Left attack
+                    board.setPosition(xTemp, yTemp, "P");
+                    moveCount++; 
+                }
+                else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && isEnemy(xTemp, yTemp)) { //right attack
                     board.setPosition(xTemp, yTemp, "P");
                     moveCount++;
-                    }
-                else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir) { //right attack
-                    board.setPosition(xTemp, yTemp, "P");
-                    moveCount++;
-                    }
-                else if (xTemp == xAxis && yTemp == yDir + yAxis) {//move 1 space forward
+                }
+                else if ((xTemp == xAxis && yTemp == yDir + yAxis) && isEmpty(xTemp, yTemp)) {//move 1 space forward
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
-                    }
-                else if (xTemp == xAxis && yTemp == (2*yDir) + (2*yDir) && moveCount == 0) {//move 2 space forward
+                }
+                else if ((xTemp == xAxis && yTemp == (2*yDir)* 2 && moveCount == 0) && isEmpty(xTemp, yTemp) && isEmpty(xTemp, yAxis + yDir))  {//move 2 space forward
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                 }
