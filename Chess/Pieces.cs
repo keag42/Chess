@@ -147,22 +147,17 @@ namespace Chess {
                 if (!isValidMove(xTemp, yTemp)) 
                     continue;
                 
-                
                 int yDir = yTemp > y? +1 : -1;
                 int xDir = xTemp > x? +1 : -1;
-
-                //tests
-                    // Console.WriteLine($"x Direction: {xDir}. y Direction:{yDir}");
-                    // Console.WriteLine($"x check: {x + (1*xDir)}, y check: {y + (1*yDir)}");
-                    // Console.WriteLine($"is empty check: {isEmpty(x + (1*xDir), y + (1*yDir))}");
-               
                 bool isTempValid = true;
-                int checkCount = 0;
-                while(xTemp != x + (1*xDir) && yTemp != y + (1*yDir)) {
-                    if (!isEmpty(x + (1*xDir), y + (1*yDir))) {
+                int checkCount = 1;
+                
+                while(xTemp != x + (checkCount*xDir) && yTemp != y + (checkCount*yDir)) {
+                    if (!isEmpty(x + (checkCount*xDir), y + (checkCount*yDir))) {
                         isTempValid = false;
                         break;
                     }
+                    checkCount++;
                 }
 
                 if (isTempValid) {
@@ -170,7 +165,6 @@ namespace Chess {
                     break;
                 }
             }
-            
             MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
         }
         public void RookMove() {
