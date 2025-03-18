@@ -43,11 +43,13 @@ namespace Chess {
                 return true;
             }
             else {
-                if (isEnemy(x, y))
+                if (isEnemy(x, y)) {
                     return true;
-                else
+                }
+                else {
                     Console.WriteLine("that is your piece.");
                     return false;
+                }
             }
         }
          public (int, int) GetPieceMove() {
@@ -177,9 +179,6 @@ namespace Chess {
             } // move validation
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
         } // final bishop structure for now
-        
-        //public static void QueenMove() {}
-        //ROOK MOVE
         public void RookMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
@@ -189,7 +188,6 @@ namespace Chess {
                 bool onXorY = (xTemp == x && yTemp != y) || (xTemp != x && yTemp == y);
                 
                 if (!isValidMove(xTemp, yTemp) || !onXorY) {
-                    Console.WriteLine("invalid move try again");
                     continue;
                 }
                 
@@ -198,6 +196,7 @@ namespace Chess {
                 
                 if ( !isHorizontal )  { //moving vertically
                     int yDirection = yTemp > y? +1 : -1;
+                    int moveCount = 1;
                     int tempTileY = y + moveCount * yDirection;
                         
                     while (tempTileY != yTemp) { //while destination not reached
@@ -257,5 +256,76 @@ namespace Chess {
             }
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
         }
+
+        public void QueenMove() {
+            (int x, int y) = GetPiecePosition();
+            (int xMove, int yMove) finalMove = (0, 0);
+
+            while (true) {
+                var (xTemp, yTemp) = GetPieceMove();
+
+                if (!isValidMove(xTemp, yTemp)){ continue; }
+                
+                bool isXY = (x == xTemp && y != yTemp)|| (x != xTemp && y == yTemp);
+                
+                // h/v unfinished
+                if (isXY) { // horizontal or verticle
+                    bool isVerticle = (x == xTemp && y != yTemp);
+                    int direction = isVerticle ? (yTemp < y? -1 : +1 ) : (xTemp < x? -1 : +1);
+                    int moveCount = 1;
+                    bool piecesInWay = false;
+
+                    while (true) {
+                        int moveAmount = moveCount * direction;
+                        if (isVerticle) { //moving up/down
+                            if (!isEmpty(x, y + moveAmount)) {
+                                piecesInWay = true;
+                                break;
+                            }
+                        }
+                        else { //moving left/right
+                            if (!isEmpty(x + moveAmount, y)) {
+                                piecesInWay = true;
+                                break;
+                            }
+                            
+                        }
+                        moveCount++;
+                    }
+                } // horizontal or verticle
+                
+                //add Diagonal
+            }
+        }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
     }
 }
