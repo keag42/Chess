@@ -139,46 +139,40 @@ namespace Chess {
         public void BishopMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
-            int xDir, yDir;
+            //int xDir, yDir;
             
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
-                if (xTemp == x && yTemp == y) {
-                    Console.WriteLine("you are already there try again.");
+                
+                if (!isValidMove(xTemp, yTemp)) 
                     continue;
-                }//if its the same tile your on try again
-                yDir = yTemp > y? +1 : -1;
-                xDir = xTemp > x? +1 : -1;
+                
+                
+                int yDir = yTemp > y? +1 : -1;
+                int xDir = xTemp > x? +1 : -1;
+
+                //tests
+                    // Console.WriteLine($"x Direction: {xDir}. y Direction:{yDir}");
+                    // Console.WriteLine($"x check: {x + (1*xDir)}, y check: {y + (1*yDir)}");
+                    // Console.WriteLine($"is empty check: {isEmpty(x + (1*xDir), y + (1*yDir))}");
+               
                 bool isTempValid = true;
-                for (int i = 1; i <= 8; i++) {
-                    int xCheck = x + (i*xDir), yCheck = y + (i*yDir);
-                    if (xCheck == xTemp && yCheck == yTemp) {//if youve reached destination
-                        break;
-                        }
-                    else if (!isEmpty(xCheck, yCheck)) {
+                int checkCount = 0;
+                while(xTemp != x + (1*xDir) && yTemp != y + (1*yDir)) {
+                    if (!isEmpty(x + (1*xDir), y + (1*yDir))) {
                         isTempValid = false;
                         break;
-                        }
-                } //checks pathway to destination
-                if (!isTempValid) {
-                    Console.WriteLine("there is a piece in the way, choose a different move.");
-                    continue;
-                } // if theres a piece in the way ask again
-                else {
-                    if (isEmpty(xTemp, yTemp)) {
-                        finalMove = (xTemp, yTemp);
                     }
-                    else if (isEnemy(xTemp, yTemp)) {
-                        finalMove = (xTemp, yTemp);
-                    } // if it is the opposite team
-                    else {
-                        Console.WriteLine("that is your own piece you cannot move there.");
-                        continue;
-                    }
-                }//end of validity check
-            } // move validation
-            board.setPosition(finalMove.xMove, finalMove.yMove, this);
-        } //  not allowing me to move anywhere
+                }
+
+                if (isTempValid) {
+                    finalMove = (xTemp, yTemp);
+                    break;
+                }
+            }
+            
+            MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
+        }
         public void RookMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
