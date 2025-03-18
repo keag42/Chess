@@ -173,51 +173,51 @@ namespace Chess {
 
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
+                
+                //checks if this the move is on the same x or y axis as rook.
                 bool onXorY = (xTemp == x && yTemp != y) || (xTemp != x && yTemp == y);
                 
+                //check if that space is empty or a enemy
                 if (!isValidMove(xTemp, yTemp) || !onXorY) {
                     continue;
                 }
                 
-                bool isHorizontal = (xTemp == x && yTemp != y);
+                //whether the move is up or down
+                bool isVerticle = (xTemp == x && yTemp != y);
                 bool piecesInWay = false;
+                int moveDirection = isVerticle ? (yTemp > y? +1 : -1) : (xTemp > x? +1 : -1) ;
+                int moveCount = 1;
                 
-                if ( !isHorizontal )  { //moving vertically
-                    int yDirection = yTemp > y? +1 : -1;
-                    int moveCount = 1;
-                    int tempTileY = y + moveCount * yDirection;
-                        
-                    while (tempTileY != yTemp) { //while destination not reached
-                        if (!isEmpty(x, tempTileY)) {
+                if ( isVerticle )  { //moving vertically
+                    while (y + (moveCount * moveDirection) != yTemp) { //while the check is not equal too the move
+                        if (!isEmpty(x, y + moveCount * moveDirection)) {
+                            Console.WriteLine("piece in way");
                             piecesInWay = true;
                             break;
                         }
                         moveCount++;
                     }
                 }
-                else if (isHorizontal) { // Horizontal movement
-                    int xDirection = xTemp > x? +1 : -1;
-                    int tempTileX = x + moveCount * xDirection;
-                        
-                    while (tempTileX != xTemp) { //while destination not reached
-                        if (!isEmpty(tempTileX, y)) {
+                else if (!isVerticle) { // Horizontal movement
+                    while (x + moveCount * moveDirection != xTemp) { //while the check is not equal too the move
+                        if (!isEmpty(x + moveCount * moveDirection, y)) {
+                            Console.WriteLine("piece in way");
                             piecesInWay = true;
                             break;
                         }
                         moveCount++;
                     }
+                    Console.WriteLine("end of inner loop");
                 }
-
-                if (piecesInWay) {
-                    Console.WriteLine("there is a piece in the way.");
+               
+                if (piecesInWay) 
                     continue;
-                }
-                else {
-                    finalMove = (xTemp, yTemp);
-                }
+                
+                finalMove.xMove = xTemp;
+                finalMove.yMove = yTemp;
+                break;
             }// end of while statement
-            
-            board.setPosition(finalMove.xMove, finalMove.yMove, this);
+            MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
         }  //   not allowing me to move anywhere
         public void KingMove() {
             (int x, int y) = GetPiecePosition();
