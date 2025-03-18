@@ -17,48 +17,6 @@ namespace Chess {
             new List<object> { "7 |", "x ", "o ", "x ", "o ", "x ", "o ", "x ", "o " }, //white side
             new List<object> { "8 |", "o ", "x ", "o ", "x ", "o ", "x ", "o ", "x " }
         };
-
-        public void setPosition(int xAxis, int yAxis, object piece) {
-            board2D[yAxis][xAxis] = piece;
-            roundCount++; //update round counter
-        }
-
-        public String getPosition(int xAxis, int yAxis) {
-            return board2D[yAxis][xAxis]?.ToString() ?? "Empty"; // Return "Empty" if the position is null
-        }
-
-
-        public bool isInBounds(int x, int y) {
-            bool validX = x >= 1 && x <= 8;
-            bool validY = y >= 1 && y <= 8;
-            return validX && validY;
-        }
-
-        public (int, int) letterToXY(string move) {
-            int x = move[0] - 'a' + 1;
-            int y = int.Parse(move[1].ToString());
-            
-            return (x, y);
-        }
-
-        public void replaceTile(int xAxis, int yAxis) {
-            board2D[yAxis][xAxis] = yAxis % 2 == 0 ? (xAxis % 2 == 0 ? "x " : "o ") : (xAxis % 2 == 0 ? "o " : "x ");
-        }
-
-        public void PrintBoard() {
-            int rowIndex = 0;
-            Console.WriteLine("         Round: " + roundCount + "\n"); //round title
-            foreach (var row in board2D) {
-                string result = string.Join(" ", row);
-                Console.WriteLine(result);
-                if (rowIndex == 0) {
-                    Console.WriteLine("    _  _  _  _  _  _  _  _ ");
-                }
-
-                rowIndex++;
-            }
-        }
-
         private List<Pieces> whitePawns;
         private List<Pieces> blackPawns;
         private List<Pieces> whiteRooks;
@@ -90,6 +48,39 @@ namespace Chess {
             SetStartingPositions();
         }
 
+        public void setPosition(int xAxis, int yAxis, object piece) {
+            board2D[yAxis][xAxis] = piece;
+            roundCount++; //update round counter
+        }
+        public String getPosition(int xAxis, int yAxis) {
+            return board2D[yAxis][xAxis]?.ToString() ?? "Empty"; // Return "Empty" if the position is null
+        }
+        public bool isInBounds(int x, int y) {
+            bool validX = x >= 1 && x <= 8;
+            bool validY = y >= 1 && y <= 8;
+            return validX && validY;
+        }
+        public (int, int) letterToXY(string move) {
+            int x = move[0] - 'a' + 1;
+            int y = int.Parse(move[1].ToString());
+            return (x, y);
+        }
+        public void replaceTile(int xAxis, int yAxis) {
+            board2D[yAxis][xAxis] = yAxis % 2 == 0 ? (xAxis % 2 == 0 ? "x " : "o ") : (xAxis % 2 == 0 ? "o " : "x ");
+        } //possibly move this into the setPosition. than refactor the code
+        public void PrintBoard() {
+            int rowIndex = 0;
+            Console.WriteLine("         Round: " + roundCount + "\n"); //round title
+            foreach (var row in board2D) {
+                string result = string.Join(" ", row);
+                Console.WriteLine(result);
+                if (rowIndex == 0) {
+                    Console.WriteLine("    _  _  _  _  _  _  _  _ ");
+                }
+
+                rowIndex++;
+            }
+        }
         private void SetStartingPositions() {
             // Set pawns
             for (int i = 1; i <= 8; i++) {
@@ -116,7 +107,6 @@ namespace Chess {
             blackBishops.Add(new Pieces(6, 8, false, "B", "Bishop", this));
 
         }
-
         public Pieces getPiecePositionValues(int xAxis, int yAxis) {
                 if (board2D[yAxis][xAxis] is Pieces piece) {
                     return piece; // Return the piece if it's a valid object

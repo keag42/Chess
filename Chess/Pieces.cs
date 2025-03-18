@@ -19,7 +19,6 @@ namespace Chess {
             this.name = name;
             board.setPosition(xAxis, yAxis, this);
         }
-
         public (int, int) GetPiecePosition() {
             return position;
         }
@@ -31,6 +30,12 @@ namespace Chess {
         }
         public bool GetColor() {
             return sideWhite;
+        }
+
+        public void MovePieceToNewPosition(int currentX, int currentY, int newX, int newY) {
+            board.setPosition(newX, newY, this);
+            board.replaceTile(currentX, currentY);
+            position = (newX, newY);
         }
         public bool isEmpty(int x, int y) {
             return board.getPosition(x, y) == "x " || board.getPosition(x, y) == "o ";
@@ -67,19 +72,19 @@ namespace Chess {
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
                 if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && isEnemy(xTemp, yTemp)) { //Left attack
-                    board.setPosition(xTemp, yTemp, "P");
+                    MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                     moveCount++; 
                 }
                 else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && isEnemy(xTemp, yTemp)) { //right attack
-                    board.setPosition(xTemp, yTemp, "P");
+                    MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                     moveCount++;
                 }
                 else if ((xTemp == xAxis && yTemp == yDir + yAxis) && isEmpty(xTemp, yTemp)) {//move 1 space forward
-                    board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                     moveCount++;
                 }
                 else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && isEmpty(xTemp, yTemp) && isEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
-                    board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
+                    MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                     moveCount++;
                 }
                 else{
@@ -88,8 +93,6 @@ namespace Chess {
                 }
                 break;
             }
-                
-            board.replaceTile(xAxis, yAxis);
         }
         public void HorseMove() {
             (int x, int y) = GetPiecePosition();
@@ -131,8 +134,7 @@ namespace Chess {
                     }
                 }
             }//end of while loop
-            board.setPosition(moveX, moveY, this);
-            board.replaceTile(x, y);
+            MovePieceToNewPosition(x, y, moveX, moveY);
         }
         public void BishopMove() {
             (int x, int y) = GetPiecePosition();
@@ -176,7 +178,7 @@ namespace Chess {
                 }//end of validity check
             } // move validation
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
-        } // final bishop structure for now
+        } //  not allowing me to move anywhere
         public void RookMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
@@ -228,7 +230,7 @@ namespace Chess {
             }// end of while statement
             
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
-        } //version 1 rook movement
+        }  //   not allowing me to move anywhere
         public void KingMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
@@ -252,7 +254,7 @@ namespace Chess {
                     }
                 }
             }
-            board.setPosition(finalMove.xMove, finalMove.yMove, this);
+            MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
         }
         public void QueenMove() {
             (int x, int y) = GetPiecePosition();
@@ -343,6 +345,6 @@ namespace Chess {
                 //add Diagonal
             }//end of while loop
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
-        } // just pasted rook & bishop methods in
+        } //   not allowing me to move anywhere
     }
 }

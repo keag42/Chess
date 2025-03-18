@@ -12,8 +12,6 @@ namespace Chess {
             
             MovePiece(board);
         }
-
-
         public static void MovePiece(ChessBoard board) {
             while (true) {
                 Console.WriteLine("Select a piece (e.g., 'a2', 'h7') or type 'exit' to quit:");
@@ -40,15 +38,13 @@ namespace Chess {
                         selectedPiece.HorseMove();
                         break;
                     case "R":
-                        Console.WriteLine("rook selected, no function written yet");
-                        //selectedPiece.RookMove();
+                        selectedPiece.RookMove(); //not working
                         break;
                     case "B":
-                        selectedPiece.BishopMove();
+                        selectedPiece.BishopMove(); //not working
                         break;
                     case "Q":
-                        Console.WriteLine("rook selected, no function written yet");
-                        //selectedPiece.QueenMove();
+                        selectedPiece.QueenMove(); //not working
                         break;
                     case "K":
                         selectedPiece.KingMove();
