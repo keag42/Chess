@@ -256,10 +256,10 @@ namespace Chess {
             }
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
         }
-
         public void QueenMove() {
             (int x, int y) = GetPiecePosition();
             (int xMove, int yMove) finalMove = (0, 0);
+            int xDir, yDir;
 
             while (true) {
                 var (xTemp, yTemp) = GetPieceMove();
@@ -310,10 +310,41 @@ namespace Chess {
                     }
                     
                 } // horizontal or verticle
+                else {
+                    yDir = yTemp > y? +1 : -1;
+                    xDir = xTemp > x? +1 : -1;
+                    bool isTempValid = true;
+                    for (int i = 1; i <= 8; i++) {
+                        int xCheck = x + (i*xDir), yCheck = y + (i*yDir);
+                        if (xCheck == xTemp && yCheck == yTemp) {//if youve reached destination
+                            break;
+                        }
+                        else if (!isEmpty(xCheck, yCheck)) {
+                            isTempValid = false;
+                            break;
+                        }
+                    } //checks pathway to destination
+                    if (!isTempValid) {
+                        Console.WriteLine("there is a piece in the way, choose a different move.");
+                        continue;
+                    } // if theres a piece in the way ask again
+                    else {
+                        if (isEmpty(xTemp, yTemp)) {
+                            finalMove = (xTemp, yTemp);
+                        }
+                        else if (isEnemy(xTemp, yTemp)) {
+                            finalMove = (xTemp, yTemp);
+                        } // if it is the opposite team
+                        else {
+                            Console.WriteLine("that is your own piece you cannot move there.");
+                            continue;
+                        }
+                    }//end of validity check
+                }
                 
                 //add Diagonal
             }//end of while loop
             board.setPosition(finalMove.xMove, finalMove.yMove, this);
-        }
+        } // just pasted rook & bishop methods in
     }
 }
