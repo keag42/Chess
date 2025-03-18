@@ -78,13 +78,11 @@ namespace Chess {
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                 }
-                else if ((xTemp == xAxis && yTemp == (2*yDir)* 2 && moveCount == 0) && isEmpty(xTemp, yTemp) && isEmpty(xTemp, yAxis + yDir))  {//move 2 space forward
+                else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && isEmpty(xTemp, yTemp) && isEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
                     board.setPosition(xTemp, yTemp, "P "); // need to make this not static and redo
                     moveCount++;
                 }
-                else {
-                    Console.WriteLine("move Count: " + moveCount);
-                    Console.WriteLine(" y direction: " + 2*yDir);
+                else{
                     Console.WriteLine("you cannot move there. try again.");
                     continue;
                 }
