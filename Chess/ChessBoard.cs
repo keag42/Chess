@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq; // Required for .Cast<object>()
+using System.Linq;
+using System.Text.RegularExpressions; // Required for .Cast<object>()
 
 namespace Chess {
     public class ChessBoard {
@@ -60,9 +61,23 @@ namespace Chess {
             bool validY = y >= 1 && y <= 8;
             return validX && validY;
         }
+
         public (int, int) letterToXY(string move) {
-            int x = move[0] - 'a' + 1;
-            int y = int.Parse(move[1].ToString());
+            int x;
+            int y;
+            
+            while (true) {
+                if (move.Length == 2 && Regex.IsMatch(move[0].ToString(), @"^[a-hA-H]$") && (move[1] > '0' && move[1] <= '8')) {
+                    x = move[0] - 'a' + 1;
+                    y = int.Parse(move[1].ToString());
+                    break;
+                }
+                else {
+                    Console.WriteLine("not on board or, incorrect format. try agiain");
+                    move = Console.ReadLine();
+                }
+            }
+            
             return (x, y);
         }
         public void replaceTile(int xAxis, int yAxis) {
