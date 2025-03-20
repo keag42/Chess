@@ -57,5 +57,15 @@ namespace Chess {
                 board.PrintBoard(); // Refresh the board after the move
             }
         }
+
+        public static (string whiteName, string blackName) playersNames() {
+            Console.WriteLine("player playing white side, what is your name?");
+            string nameWhite = Console.ReadLine();
+            
+            Console.WriteLine("player playing white side, what is your name?");
+            string nameBlack = Console.ReadLine();
+            
+            return (nameBlack, nameWhite);
+        }
     }
 }
