@@ -1,13 +1,11 @@
-using System.Runtime.CompilerServices;
 namespace Chess;
 public class Pieces {
     private ChessBoard board;
-    private (int x, int y) position = (0, 0);
+    private (int x, int y) position;
     private String type;
     private string name;
     private bool sideWhite;
-    private int moveCount = 0;
-
+    private int moveCount;
     public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name, ChessBoard board) {
         //starting position constructor
         this.board = board;
@@ -20,7 +18,7 @@ public class Pieces {
     public (int, int) GetPiecePosition() {
         return position;
     }
-    public string GetType() {
+    public new String GetType() {
         return type;
     }
     public string GetName() {
@@ -35,18 +33,18 @@ public class Pieces {
         board.replaceTile(currentX, currentY);
         position = (newX, newY);
     }
-    public bool isEmpty(int x, int y) {
+    public bool IsEmpty(int x, int y) {
         return board.getPosition(x, y) == "x " || board.getPosition(x, y) == "o ";
     }
-    public bool isEnemy(int x, int y) {
+    public bool IsEnemy(int x, int y) {
         return board.getPiecePositionValues(x, y).GetColor() != this.GetColor();
     }
-    public bool isValidMove(int x, int y) {
-        if (isEmpty(x, y)) {
+    public bool IsValidMove(int x, int y) {
+        if (IsEmpty(x, y)) {
             return true;
         }
         else {
-            if (isEnemy(x, y)) {
+            if (IsEnemy(x, y)) {
                 return true;
             }
             else {
@@ -68,45 +66,45 @@ public class Pieces {
     public bool IsCheck(int x, int y) {
         
         // HORSE CHECK
-        if (board.getPiecePositionValues(x + 2, y + 1).GetType().Equals("H") && isEnemy(x + 2, y + 1)) { return true; }      // x + 2, y + 1
-        if (board.getPiecePositionValues(x + 2, y - 1).GetType().Equals("H") && isEnemy(x + 2, y - 1)) {return true; } // x + 2, y - 1
-        if (board.getPiecePositionValues(x - 2, y - 1).GetType().Equals("H") && isEnemy(x - 2, y - 1)) {return true; } // x - 2, y - 1
-        if (board.getPiecePositionValues(x - 1, y + 2).GetType().Equals("H") && isEnemy(x - 1, y + 2)) {return true; } // x - 1, y + 2
-        if (board.getPiecePositionValues(x + 1, y + 2).GetType().Equals("H") && isEnemy(x + 1, y + 2)) {return true; } // x + 1, y + 2
-        if (board.getPiecePositionValues(x - 1, y - 2).GetType().Equals("H") && isEnemy(x - 1, y - 2)) {return true; } // x - 1, y - 2
-        if (board.getPiecePositionValues(x + 1, y - 2).GetType().Equals("H") && isEnemy(x + 1, y - 2)) {return true; } // x + 1, y - 2
+        if (board.getPiecePositionValues(x + 2, y + 1).GetType().Equals("H") && IsEnemy(x + 2, y + 1)) { return true; }      // x + 2, y + 1
+        if (board.getPiecePositionValues(x + 2, y - 1).GetType().Equals("H") && IsEnemy(x + 2, y - 1)) {return true; } // x + 2, y - 1
+        if (board.getPiecePositionValues(x - 2, y - 1).GetType().Equals("H") && IsEnemy(x - 2, y - 1)) {return true; } // x - 2, y - 1
+        if (board.getPiecePositionValues(x - 1, y + 2).GetType().Equals("H") && IsEnemy(x - 1, y + 2)) {return true; } // x - 1, y + 2
+        if (board.getPiecePositionValues(x + 1, y + 2).GetType().Equals("H") && IsEnemy(x + 1, y + 2)) {return true; } // x + 1, y + 2
+        if (board.getPiecePositionValues(x - 1, y - 2).GetType().Equals("H") && IsEnemy(x - 1, y - 2)) {return true; } // x - 1, y - 2
+        if (board.getPiecePositionValues(x + 1, y - 2).GetType().Equals("H") && IsEnemy(x + 1, y - 2)) {return true; } // x + 1, y - 2
         
         // Diagonals
             // right-up
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x + i, y + i)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x + i, y + i).GetType();
-            if(isEmpty(x + i, y + i)) {continue;}
-            if (!isEnemy(x + i, y + i)) { break;}
+            if(IsEmpty(x + i, y + i)) {continue;}
+            if (!IsEnemy(x + i, y + i)) { break;}
             if( diagonalPiece == "Q" || diagonalPiece == "B" ) { return true; }
         }
             // left-down
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x - i, y - i)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x - i, y - i).GetType();
-            if ( isEmpty(x - i, y - i) ) {continue;}
-            if (!isEnemy(x - i, y - i)) { break;}
+            if ( IsEmpty(x - i, y - i) ) {continue;}
+            if (!IsEnemy(x - i, y - i)) { break;}
             if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
         }
             // left-up
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x - i, y + i)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x - i, y + i).GetType();
-            if ( isEmpty(x - i, y + i) ) {continue;}
-            if ( !isEnemy(x - i, y + i) ) { break;}
+            if ( IsEmpty(x - i, y + i) ) {continue;}
+            if ( !IsEnemy(x - i, y + i) ) { break;}
             if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
         }
             // right-down
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x + i, y - i)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x + i, y - i).GetType();
-            if ( isEmpty(x + i, y - i) ) {continue;}
-            if ( !isEnemy(x + i, y - i) ) { break;}
+            if ( IsEmpty(x + i, y - i) ) {continue;}
+            if ( !IsEnemy(x + i, y - i) ) { break;}
             if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
         }
         
@@ -115,24 +113,24 @@ public class Pieces {
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x, y + i)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x, y + i).GetType();
-            if(isEmpty(x, y + i)) {continue;}
-            if (!isEnemy(x, y + i)) { break;}
+            if(IsEmpty(x, y + i)) {continue;}
+            if (!IsEnemy(x, y + i)) { break;}
             if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
         }
             //down
         for(int i = 1; i <= 8; i++) {
             string diagonalPiece = board.getPiecePositionValues(x, y - i).GetType();
             if(!board.isInBounds(x, y - i)) {break;}
-            if(isEmpty(x, y - i)) {continue;}
-            if (!isEnemy(x, y - i)) { break;}
+            if(IsEmpty(x, y - i)) {continue;}
+            if (!IsEnemy(x, y - i)) { break;}
             if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
         }
             // left
         for(int i = 1; i <= 8; i++) {
             if(!board.isInBounds(x - i, y)) {break;}
             string diagonalPiece = board.getPiecePositionValues(x - i, y).GetType();
-            if(isEmpty(x - i, y)) {continue;}
-            if (!isEnemy(x - i, y)) { break;}
+            if(IsEmpty(x - i, y)) {continue;}
+            if (!IsEnemy(x - i, y)) { break;}
             if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
         }
             //Right
@@ -140,8 +138,8 @@ public class Pieces {
                 if(!board.isInBounds(x + i, y)) {break;}
                 
                 string diagonalPiece = board.getPiecePositionValues(x + i, y).GetType();
-                if(isEmpty(x + i, y)) {continue;}
-                if (!isEnemy(x + i, y)) { break;}
+                if(IsEmpty(x + i, y)) {continue;}
+                if (!IsEnemy(x + i, y)) { break;}
                 if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
             }
 
@@ -152,19 +150,19 @@ public class Pieces {
         int yDir = sideWhite ? +1 : -1;
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
-            if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && isEnemy(xTemp, yTemp)) { //Left attack
+            if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && IsEnemy(xTemp, yTemp)) { //Left attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                 moveCount++; 
             }
-            else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && isEnemy(xTemp, yTemp)) { //right attack
+            else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && IsEnemy(xTemp, yTemp)) { //right attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                 moveCount++;
             }
-            else if ((xTemp == xAxis && yTemp == yDir + yAxis) && isEmpty(xTemp, yTemp)) {//move 1 space forward
+            else if ((xTemp == xAxis && yTemp == yDir + yAxis) && IsEmpty(xTemp, yTemp)) {//move 1 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                 moveCount++;
             }
-            else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && isEmpty(xTemp, yTemp) && isEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
+            else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && IsEmpty(xTemp, yTemp) && IsEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
                 moveCount++;
             }
@@ -196,22 +194,21 @@ public class Pieces {
                     Console.WriteLine("that is not a valid Horse move. where would you like to move?");
                     continue;
                 }
-            if (isEmpty(xTemp, yTemp)) {
+            if (IsEmpty(xTemp, yTemp)) {
                 moveX = xTemp;
                 moveY = yTemp;
                 break;
-                }
+            }
             else {
-                if (isEnemy(xTemp, yTemp)) {
+                if (IsEnemy(xTemp, yTemp)) {
                     string tempName = board.getPiecePositionValues(xTemp, yTemp).GetName();
                     Console.WriteLine($" takes {tempName}");
                     moveX = xTemp;
                     moveY = yTemp;
-                    break;
+                    break; 
                 }
                 else {
                     Console.WriteLine("that's your piece you cant move there. try again.");
-                    continue;
                 }
             }
         }//end of while loop
@@ -219,13 +216,13 @@ public class Pieces {
     }
     public void BishopMove() {
         (int x, int y) = GetPiecePosition();
-        (int xMove, int yMove) finalMove = (0, 0);
+        (int xMove, int yMove) finalMove;
         //int xDir, yDir;
         
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
             
-            if (!isValidMove(xTemp, yTemp)) 
+            if (!IsValidMove(xTemp, yTemp)) 
                 continue;
             
             int yDir = yTemp > y? +1 : -1;
@@ -234,7 +231,7 @@ public class Pieces {
             int checkCount = 1;
             
             while(xTemp != x + (checkCount*xDir) && yTemp != y + (checkCount*yDir)) {
-                if (!isEmpty(x + (checkCount*xDir), y + (checkCount*yDir))) {
+                if (!IsEmpty(x + (checkCount*xDir), y + (checkCount*yDir))) {
                     isTempValid = false;
                     break;
                 }
@@ -259,34 +256,34 @@ public class Pieces {
             bool onXorY = (xTemp == x && yTemp != y) || (xTemp != x && yTemp == y);
             
             //check if that space is empty or a enemy
-            if (!isValidMove(xTemp, yTemp) || !onXorY) {
+            if (!IsValidMove(xTemp, yTemp) || !onXorY) {
                 continue;
             }
             
             //whether the move is up or down
-            bool isVerticle = (xTemp == x && yTemp != y);
+            bool isVertical = (xTemp == x && yTemp != y);
             bool piecesInWay = false;
-            int moveDirection = isVerticle ? (yTemp > y? +1 : -1) : (xTemp > x? +1 : -1) ;
-            int moveCount = 1;
+            int moveDirection = isVertical ? (yTemp > y? +1 : -1) : (xTemp > x? +1 : -1) ;
+            int tempMoveCount = 1;
             
-            if ( isVerticle )  { //moving vertically
-                while (y + (moveCount * moveDirection) != yTemp) { //while the check is not equal too the move
-                    if (!isEmpty(x, y + moveCount * moveDirection)) {
+            if ( isVertical )  { //moving vertically
+                while (y + (tempMoveCount * moveDirection) != yTemp) { //while the check is not equal too the move
+                    if (!IsEmpty(x, y + tempMoveCount * moveDirection)) {
                         Console.WriteLine("piece in way");
                         piecesInWay = true;
                         break;
                     }
-                    moveCount++;
+                    tempMoveCount++;
                 }
             }
-            else if (!isVerticle) { // Horizontal movement
-                while (x + moveCount * moveDirection != xTemp) { //while the check is not equal too the move
-                    if (!isEmpty(x + moveCount * moveDirection, y)) {
+            else if (!isVertical) { // Horizontal movement
+                while (x + tempMoveCount * moveDirection != xTemp) { //while the check is not equal too the move
+                    if (!IsEmpty(x + tempMoveCount * moveDirection, y)) {
                         Console.WriteLine("piece in way");
                         piecesInWay = true;
                         break;
                     }
-                    moveCount++;
+                    tempMoveCount++;
                 }
                 Console.WriteLine("end of inner loop");
             }
@@ -302,24 +299,23 @@ public class Pieces {
     }  //   not allowing me to move anywhere
     public void KingMove() {
         (int x, int y) = GetPiecePosition();
-        (int xMove, int yMove) finalMove = (0, 0);
+        (int xMove, int yMove) finalMove;
 
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
             bool isValidKingMove = (xTemp >= x - 1 && xTemp <= x + 1 && yTemp >= y - 1 && yTemp <= y + 1);
 
             if (isValidKingMove) { //valid king move
-                if (isEmpty(xTemp, yTemp)) { //no piece there
+                if (IsEmpty(xTemp, yTemp)) { //no piece there
                     finalMove = (xTemp, yTemp);
                     break;
                 }
-                else if (isEnemy(xTemp, yTemp)) {
+                else if (IsEnemy(xTemp, yTemp)) {
                     finalMove = (xTemp, yTemp);
                     break;
                 }
                 else {
                     Console.WriteLine("that is your own piece, you cant move there. try again!");
-                    continue;
                 }
             }
         }
@@ -332,43 +328,43 @@ public class Pieces {
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
 
-            if (!isValidMove(xTemp, yTemp)){ continue; }
+            if (!IsValidMove(xTemp, yTemp)){ continue; }
             
             bool isXY = (x == xTemp && y != yTemp)|| (x != xTemp && y == yTemp);
             
             // h/v unfinished
-            if (isXY) { // horizontal or verticle
+            if (isXY) { // horizontal or vertical
                 bool onXorY = (xTemp == x && yTemp != y) || (xTemp != x && yTemp == y);
             
                 //check if that space is empty or a enemy
-                if (!isValidMove(xTemp, yTemp) || !onXorY) {
+                if (!IsValidMove(xTemp, yTemp) || !onXorY) {
                     continue;
                 }
             
                 //whether the move is up or down
-                bool isVerticle = (xTemp == x && yTemp != y);
+                bool isVertical = (xTemp == x && yTemp != y);
                 bool piecesInWay = false;
-                int moveDirection = isVerticle ? (yTemp > y? +1 : -1) : (xTemp > x? +1 : -1) ;
-                int moveCount = 1;
+                int moveDirection = isVertical ? (yTemp > y? +1 : -1) : (xTemp > x? +1 : -1) ;
+                int tempMoveCount = 1;
             
-                if ( isVerticle )  { //moving vertically
-                    while (y + (moveCount * moveDirection) != yTemp) { //while the check is not equal too the move
-                        if (!isEmpty(x, y + moveCount * moveDirection)) {
+                if ( isVertical )  { //moving vertically
+                    while (y + (tempMoveCount * moveDirection) != yTemp) { //while the check is not equal too the move
+                        if (!IsEmpty(x, y + tempMoveCount * moveDirection)) {
                             Console.WriteLine("piece in way");
                             piecesInWay = true;
                             break;
                         }
-                        moveCount++;
+                        tempMoveCount++;
                     }
                 }
-                else if (!isVerticle) { // Horizontal movement
-                    while (x + moveCount * moveDirection != xTemp) { //while the check is not equal too the move
-                        if (!isEmpty(x + moveCount * moveDirection, y)) {
+                else if (!isVertical) { // Horizontal movement
+                    while (x + tempMoveCount * moveDirection != xTemp) { //while the check is not equal too the move
+                        if (!IsEmpty(x + tempMoveCount * moveDirection, y)) {
                             Console.WriteLine("piece in way");
                             piecesInWay = true;
                             break;
                         }
-                        moveCount++;
+                        tempMoveCount++;
                     }
                     Console.WriteLine("end of inner loop");
                 }
@@ -380,7 +376,7 @@ public class Pieces {
                 finalMove.yMove = yTemp;
                 break;
                 
-            } // horizontal or verticle end
+            } // horizontal or vertical end
 
             else {
                 //DIAGONAL DIAGONAL DIAGONAL
@@ -390,7 +386,7 @@ public class Pieces {
                 int checkCount = 1;
 
                 while (xTemp != x + (checkCount * xDir) && yTemp != y + (checkCount * yDir)) {
-                    if (!isEmpty(x + (checkCount * xDir), y + (checkCount * yDir))) {
+                    if (!IsEmpty(x + (checkCount * xDir), y + (checkCount * yDir))) {
                         isTempValid = false;
                         break;
                     }
