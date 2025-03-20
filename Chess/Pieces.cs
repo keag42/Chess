@@ -64,6 +64,89 @@ public class Pieces {
     public override string ToString() { //possibly remove this
         return type + " ";
     }
+
+    public bool IsCheck(int x, int y) {
+        
+        // HORSE CHECK
+        if (board.getPiecePositionValues(x + 2, y + 1).GetType().Equals("H") && isEnemy(x + 2, y + 1)) { return true; }      // x + 2, y + 1
+        if (board.getPiecePositionValues(x + 2, y - 1).GetType().Equals("H") && isEnemy(x + 2, y - 1)) {return true; } // x + 2, y - 1
+        if (board.getPiecePositionValues(x - 2, y - 1).GetType().Equals("H") && isEnemy(x - 2, y - 1)) {return true; } // x - 2, y - 1
+        if (board.getPiecePositionValues(x - 1, y + 2).GetType().Equals("H") && isEnemy(x - 1, y + 2)) {return true; } // x - 1, y + 2
+        if (board.getPiecePositionValues(x + 1, y + 2).GetType().Equals("H") && isEnemy(x + 1, y + 2)) {return true; } // x + 1, y + 2
+        if (board.getPiecePositionValues(x - 1, y - 2).GetType().Equals("H") && isEnemy(x - 1, y - 2)) {return true; } // x - 1, y - 2
+        if (board.getPiecePositionValues(x + 1, y - 2).GetType().Equals("H") && isEnemy(x + 1, y - 2)) {return true; } // x + 1, y - 2
+        
+        // Diagonals
+            // right-up
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x + i, y + i)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x + i, y + i).GetType();
+            if(isEmpty(x + i, y + i)) {continue;}
+            if (!isEnemy(x + i, y + i)) { break;}
+            if( diagonalPiece == "Q" || diagonalPiece == "B" ) { return true; }
+        }
+            // left-down
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x - i, y - i)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x - i, y - i).GetType();
+            if ( isEmpty(x - i, y - i) ) {continue;}
+            if (!isEnemy(x - i, y - i)) { break;}
+            if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
+        }
+            // left-up
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x - i, y + i)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x - i, y + i).GetType();
+            if ( isEmpty(x - i, y + i) ) {continue;}
+            if ( !isEnemy(x - i, y + i) ) { break;}
+            if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
+        }
+            // right-down
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x + i, y - i)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x + i, y - i).GetType();
+            if ( isEmpty(x + i, y - i) ) {continue;}
+            if ( !isEnemy(x + i, y - i) ) { break;}
+            if ( diagonalPiece == "Q" || diagonalPiece == "B")  { return true; }
+        }
+        
+        // horizontal or verticle
+            //up
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x, y + i)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x, y + i).GetType();
+            if(isEmpty(x, y + i)) {continue;}
+            if (!isEnemy(x, y + i)) { break;}
+            if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
+        }
+            //down
+        for(int i = 1; i <= 8; i++) {
+            string diagonalPiece = board.getPiecePositionValues(x, y - i).GetType();
+            if(!board.isInBounds(x, y - i)) {break;}
+            if(isEmpty(x, y - i)) {continue;}
+            if (!isEnemy(x, y - i)) { break;}
+            if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
+        }
+            // left
+        for(int i = 1; i <= 8; i++) {
+            if(!board.isInBounds(x - i, y)) {break;}
+            string diagonalPiece = board.getPiecePositionValues(x - i, y).GetType();
+            if(isEmpty(x - i, y)) {continue;}
+            if (!isEnemy(x - i, y)) { break;}
+            if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
+        }
+            //Right
+        for(int i = 1; i <= 8; i++) {
+                if(!board.isInBounds(x + i, y)) {break;}
+                
+                string diagonalPiece = board.getPiecePositionValues(x + i, y).GetType();
+                if(isEmpty(x + i, y)) {continue;}
+                if (!isEnemy(x + i, y)) { break;}
+                if( diagonalPiece == "Q" || diagonalPiece == "R" ) { return true; }
+            }
+
+        return false;
+    }
     public void PawnMove() { 
         (int xAxis, int yAxis) = GetPiecePosition();
         int yDir = sideWhite ? +1 : -1;
