@@ -27,7 +27,6 @@ public class Pieces {
     public bool GetColor() {
         return sideWhite;
     }
-
     public void MovePieceToNewPosition(int currentX, int currentY, int newX, int newY) {
         board.setPosition(newX, newY, this);
         board.replaceTile(currentX, currentY);
@@ -53,16 +52,15 @@ public class Pieces {
             }
         }
     }
-     public (int, int) GetPieceMove() {
+    public (int, int) GetPieceMove() {
         Console.WriteLine($"where would you like to move this {name}? ex. e5, d3, a1");
         string tempMove = Console.ReadLine();
         var (xTemp, yTemp) = board.letterToXY(tempMove);
-        return (xTemp, yTemp);
+        return (xTemp, yTemp); 
     }
     public override string ToString() { //possibly remove this
         return type + " ";
     }
-
     public bool IsCheck(int x, int y) {
         
         // HORSE CHECK

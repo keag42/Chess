@@ -61,7 +61,6 @@ namespace Chess {
             bool validY = y >= 1 && y <= 8;
             return validX && validY;
         }
-
         public (int, int) letterToXY(string move) {
             int x;
             int y;
@@ -95,6 +94,8 @@ namespace Chess {
 
                 rowIndex++;
             }
+
+            Console.WriteLine("^^   _  white side  _   ^^");
         }
         private void SetStartingPositions() {
             // Set pawns

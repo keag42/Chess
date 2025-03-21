@@ -7,7 +7,7 @@ namespace Chess {
         public static void Main(string[] args) {
             ChessBoard board = new ChessBoard();
             board.PrintBoard();
-            Console.WriteLine("----------------------------\n" + "----------------------------\n" + "\n \n \n" );
+            Console.WriteLine("--------------------------\n"+ " \n \n" );
 
             
             MovePiece(board);
