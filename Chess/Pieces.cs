@@ -2,13 +2,13 @@ namespace Chess;
 public class Pieces {
     private ChessBoard board;
     private (int x, int y) position;
+    
     private String type;
     private string name;
     private bool sideWhite;
     private int moveCount;
     private bool isAlive = true;
-    public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name, ChessBoard board) {
-        //starting position constructor
+    public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name, ChessBoard board) { //starting position constructor
         this.board = board;
         this.sideWhite = sideWhite;
         position = (xAxis, yAxis);
@@ -40,7 +40,8 @@ public class Pieces {
         isAlive = false;
     } // for chessboard method when your piece is killed not to display anymore.
     
-    //Helper Methods
+    
+    // HELPER methods
     public void MovePieceToNewPosition(int currentX, int currentY, int newX, int newY) {
         board.setPosition(newX, newY, this);
         board.replaceTile(currentX, currentY);
@@ -159,7 +160,6 @@ public class Pieces {
 
         return false;
     }
-
     public bool CastlePossible(int xMove, int yMove) { //temporary need to add validation
         if (moveCount == 0 && board.getPiecePositionValues(xMove, yMove).GetMoveCount() == 0) {
             //check if theres anything inbetween
@@ -183,6 +183,30 @@ public class Pieces {
         return false; // if the logic doesn't end up working
     }
 
+    public void PawnPromote() {
+        Console.WriteLine("Pawn Promotion!, what would you like to promote too?");
+        Console.WriteLine("Rook: 'R', Queen: 'Q', Bishop: 'B', Horse: 'H'");
+        string temp = Console.ReadLine(); //add validation (regex to make sure its one of the viable options)
+
+        switch (temp) {
+            case "R":
+                type = "R";
+                name = "Rook";
+                break;
+            case "Q":
+                type = "Q";
+                name = "Queen";
+                break;
+            case "B":
+                type = "B";
+                name = "Bishop";
+                break;
+            case "H":
+                type = "H";
+                name = "Horse";
+                break;
+        } //change value
+    }
     
     // MOVEMENT
     public void PawnMove() { 
