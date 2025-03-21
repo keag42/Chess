@@ -187,7 +187,7 @@ public class Pieces {
         Console.WriteLine("Pawn Promotion!, what would you like to promote too?");
         Console.WriteLine("Rook: 'R', Queen: 'Q', Bishop: 'B', Horse: 'H'");
         string temp = Console.ReadLine(); //add validation (regex to make sure its one of the viable options)
-
+        
         switch (temp) {
             case "R":
                 type = "R";
@@ -212,16 +212,23 @@ public class Pieces {
     public void PawnMove() { 
         (int xAxis, int yAxis) = GetPiecePosition();
         int yDir = sideWhite ? +1 : -1;
+        int endY = sideWhite ? 8 : 1;
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
             if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && IsEnemy(xTemp, yTemp)) { //Left attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
+                if (yTemp == endY) 
+                    PawnPromote();
             }
             else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && IsEnemy(xTemp, yTemp)) { //right attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
+                if (yTemp == endY) 
+                    PawnPromote();
             }
             else if ((xTemp == xAxis && yTemp == yDir + yAxis) && IsEmpty(xTemp, yTemp)) {//move 1 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
+                if (yTemp == endY) 
+                    PawnPromote();
             }
             else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && IsEmpty(xTemp, yTemp) && IsEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
