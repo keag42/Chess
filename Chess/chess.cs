@@ -8,7 +8,6 @@ namespace Chess {
             ChessBoard board = new ChessBoard();
             board.PrintBoard();
             Console.WriteLine("--------------------------\n"+ " \n \n" );
-
             
             MovePiece(board);
         }

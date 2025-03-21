@@ -6,6 +6,7 @@ public class Pieces {
     private string name;
     private bool sideWhite;
     private int moveCount;
+    private bool isAlive = true;
     public Pieces(int xAxis, int yAxis, bool sideWhite, String type, string name, ChessBoard board) {
         //starting position constructor
         this.board = board;
@@ -15,6 +16,8 @@ public class Pieces {
         this.name = name;
         board.setPosition(xAxis, yAxis, this);
     }
+    
+    // GETS 
     public (int, int) GetPiecePosition() {
         return position;
     }
@@ -27,6 +30,13 @@ public class Pieces {
     public bool GetColor() {
         return sideWhite;
     }
+    
+    // SETS 
+    public void PieceTaken() {
+        isAlive = false;
+    } // for chessboard method when your piece is killed not to display anymore.
+    
+    //Helper Methods
     public void MovePieceToNewPosition(int currentX, int currentY, int newX, int newY) {
         board.setPosition(newX, newY, this);
         board.replaceTile(currentX, currentY);
@@ -143,6 +153,8 @@ public class Pieces {
 
         return false;
     }
+    
+    // MOVEMENT
     public void PawnMove() { 
         (int xAxis, int yAxis) = GetPiecePosition();
         int yDir = sideWhite ? +1 : -1;
@@ -294,7 +306,7 @@ public class Pieces {
             break;
         }// end of while statement
         MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
-    }  //   not allowing me to move anywhere
+    }  
     public void KingMove() {
         (int x, int y) = GetPiecePosition();
         (int xMove, int yMove) finalMove;
