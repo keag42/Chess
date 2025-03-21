@@ -162,7 +162,7 @@ public class ChessBoard {
 
     public void KillPiece(int x, int y) {
         Pieces temp = getPiecePositionValues(x, y);
-        temp.PieceTaken();
+        getPiecePositionValues(x,y).PieceTaken();
         
         bool sideWhite = temp.GetColor();
         switch (temp.GetType()) {

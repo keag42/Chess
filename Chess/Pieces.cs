@@ -30,6 +30,10 @@ public class Pieces {
     public bool GetColor() {
         return sideWhite;
     }
+
+    public int GetMoveCount() {
+        return moveCount;
+    }
     
     // SETS 
     public void PieceTaken() {
@@ -44,6 +48,9 @@ public class Pieces {
     }
     public bool IsEmpty(int x, int y) {
         return board.getPosition(x, y) == "x " || board.getPosition(x, y) == "o ";
+    }
+    public bool IsEmpty() {
+        return board.getPosition(position.x, position.y) == "x " || board.getPosition(position.x, position.y) == "o ";
     }
     public bool IsEnemy(int x, int y) {
         return board.getPiecePositionValues(x, y).GetColor() != this.GetColor();
@@ -68,11 +75,10 @@ public class Pieces {
         var (xTemp, yTemp) = board.letterToXY(tempMove);
         return (xTemp, yTemp); 
     }
-    public override string ToString() { //possibly remove this
+    public override string ToString() {
         return type + " ";
     }
     public bool IsCheck(int x, int y) {
-        
         // HORSE CHECK
         if (board.getPiecePositionValues(x + 2, y + 1).GetType().Equals("H") && IsEnemy(x + 2, y + 1)) { return true; }      // x + 2, y + 1
         if (board.getPiecePositionValues(x + 2, y - 1).GetType().Equals("H") && IsEnemy(x + 2, y - 1)) {return true; } // x + 2, y - 1
@@ -153,6 +159,30 @@ public class Pieces {
 
         return false;
     }
+
+    public bool CastlePossible(int xMove, int yMove) { //temporary need to add validation
+        if (moveCount == 0 && board.getPiecePositionValues(xMove, yMove).GetMoveCount() == 0) {
+            //check if theres anything inbetween
+            int direction = xMove > position.x ? +1 : -1;
+
+            for (int i = 0; i <= 3; i++) {
+                int tempX = position.x + (i*direction);
+
+                if (tempX == xMove) {
+                    return true;
+                }
+                else if(board.getPiecePositionValues(tempX, yMove).IsEmpty()) {
+                    continue;
+                }
+            }
+        }
+        else {
+            Console.WriteLine("you cannot castle because you've moved either your Rook or King");
+            return false;
+        }
+        return false; // if the logic doesn't end up working
+    }
+
     
     // MOVEMENT
     public void PawnMove() { 
@@ -162,24 +192,21 @@ public class Pieces {
             var (xTemp, yTemp) = GetPieceMove();
             if ((xTemp == xAxis + 1 && yTemp == yAxis + yDir) && IsEnemy(xTemp, yTemp)) { //Left attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
-                moveCount++; 
             }
             else if (xTemp == xAxis - 1 && yTemp == yAxis + yDir && IsEnemy(xTemp, yTemp)) { //right attack
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
-                moveCount++;
             }
             else if ((xTemp == xAxis && yTemp == yDir + yAxis) && IsEmpty(xTemp, yTemp)) {//move 1 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
-                moveCount++;
             }
             else if (xTemp == xAxis && yTemp ==  yAxis + (2*yDir) && moveCount == 0 && IsEmpty(xTemp, yTemp) && IsEmpty(xTemp, yAxis + (1*yDir)))  {//move 2 space forward
                 MovePieceToNewPosition(xAxis, yAxis, xTemp, yTemp);
-                moveCount++;
             }
             else{
                 Console.WriteLine("you cannot move there. try again.");
                 continue;
             }
+            moveCount++;
             break;
         }
     }
@@ -305,6 +332,7 @@ public class Pieces {
             finalMove.yMove = yTemp;
             break;
         }// end of while statement
+        moveCount++;
         MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
     }  
     public void KingMove() {
@@ -314,7 +342,6 @@ public class Pieces {
         while (true) {
             var (xTemp, yTemp) = GetPieceMove();
             bool isValidKingMove = (xTemp >= x - 1 && xTemp <= x + 1 && yTemp >= y - 1 && yTemp <= y + 1);
-
             if (isValidKingMove) { //valid king move
                 if (IsEmpty(xTemp, yTemp)) { //no piece there
                     finalMove = (xTemp, yTemp);
@@ -329,6 +356,7 @@ public class Pieces {
                 }
             }
         }
+        moveCount++;
         MovePieceToNewPosition(x, y, finalMove.xMove, finalMove.yMove);
     }
     public void QueenMove() {
