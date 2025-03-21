@@ -1,7 +1,7 @@
 PIECES OBJECT
 
 attributes:
-   - ChessBoard **'board'
+   - ChessBoard 'board'
     -> holds instance of chess board object
         
   - (int x, int y) 'position' h
